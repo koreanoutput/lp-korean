@@ -3,6 +3,8 @@ import crypto from 'crypto';
 const LINE_CHANNEL_ACCESS_TOKEN = process.env.LINE_CHANNEL_ACCESS_TOKEN;
 const LINE_CHANNEL_SECRET = process.env.LINE_CHANNEL_SECRET;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
 const TRIAL_SENTENCES = [
   { day: 1, japanese: '私は毎朝、韓国語を10分勉強します。', korean: '저는 매일 아침 한국어를 10분 공부해요.' },
@@ -126,6 +128,108 @@ async function transcribeAudio(audioBuffer) {
   return transcriptData.text || '';
 }
 
+function extractTextFromGeminiResponse(data) {
+  const candidates = data?.candidates || [];
+  for (const candidate of candidates) {
+    const parts = candidate?.content?.parts || [];
+    for (const part of parts) {
+      if (typeof part?.text === 'string' && part.text.trim()) {
+        return part.text.trim();
+      }
+    }
+  }
+  return '';
+}
+
+function tryParseJson(text) {
+  if (!text) return null;
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    const cleaned = text
+      .replace(/^```json\s*/i, '')
+      .replace(/^```\s*/i, '')
+      .replace(/```$/i, '')
+      .trim();
+
+    try {
+      return JSON.parse(cleaned);
+    } catch {
+      return null;
+    }
+  }
+}
+
+async function generateGeminiAudioFeedback({ audioBuffer, lesson, recognizedText }) {
+  const prompt = [
+    'あなたは韓国語コーチです。',
+    '学習者の音声（韓国語）を聞いて、発音とイントネーションを評価してください。',
+    `課題（日本語）: ${lesson.japanese}`,
+    `目標文（韓国語）: ${lesson.korean}`,
+    `文字起こし結果: ${recognizedText || '(空)'}`,
+    '',
+    '次のJSONだけを返してください。説明文は不要です。',
+    '{"score": number, "pronunciation": string, "intonation": string, "fix": string, "model": string}',
+    '条件:',
+    '- scoreは0-100の整数',
+    '- pronunciation, intonation, fix, model はそれぞれ120文字以内',
+    '- modelは学習者向けの自然な模範文'
+  ].join('\n');
+
+  const base64Audio = Buffer.from(audioBuffer).toString('base64');
+
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              { text: prompt },
+              {
+                inline_data: {
+                  mime_type: 'audio/mp4',
+                  data: base64Audio
+                }
+              }
+            ]
+          }
+        ],
+        generationConfig: {
+          responseMimeType: 'application/json'
+        }
+      })
+    }
+  );
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`Gemini feedback failed: ${response.status} ${errText}`);
+  }
+
+  const data = await response.json();
+  const rawText = extractTextFromGeminiResponse(data);
+  const parsed = tryParseJson(rawText);
+
+  if (!parsed) {
+    throw new Error(`Gemini feedback parse failed: ${rawText}`);
+  }
+
+  return {
+    score: Number.isFinite(parsed.score) ? Math.max(0, Math.min(100, Math.round(parsed.score))) : 0,
+    pronunciation: parsed.pronunciation || '発音の要点を確認できませんでした。',
+    intonation: parsed.intonation || 'イントネーションの要点を確認できませんでした。',
+    fix: parsed.fix || 'もう一度ゆっくり録音してみてください。',
+    model: parsed.model || lesson.korean
+  };
+}
+
 function normalizeKorean(text) {
   return (text || '')
     .toLowerCase()
@@ -152,14 +256,15 @@ function levenshtein(a, b) {
   return dp[a.length][b.length];
 }
 
-function buildFeedback(expectedKorean, recognizedText) {
+function buildFallbackFeedback(expectedKorean, recognizedText) {
   const expected = normalizeKorean(expectedKorean);
   const actual = normalizeKorean(recognizedText);
 
   if (!actual) {
     return {
       score: 0,
-      good: '音声は受信できましたが、文字起こし結果が空でした。',
+      pronunciation: '音声は受信できましたが、文字起こし結果が空でした。',
+      intonation: 'イントネーション評価を行うため、もう一度録音してください。',
       fix: 'もう一度、少しゆっくり・はっきり録音して送ってみてください。',
       model: expectedKorean
     };
@@ -169,26 +274,35 @@ function buildFeedback(expectedKorean, recognizedText) {
   const maxLen = Math.max(expected.length, actual.length, 1);
   const score = Math.max(0, Math.round((1 - distance / maxLen) * 100));
 
-  let good = '文全体の流れはとても良いです。';
-  let fix = '語尾と助詞をもう一度意識して言ってみましょう。';
-
-  if (score >= 90) {
-    good = 'ほぼ正確です！発音も自然でとても良いです。';
-    fix = 'このまま同じ速さで2〜3回繰り返して定着させましょう。';
-  } else if (score >= 70) {
-    good = '大枠は合っています。伝わる韓国語になっています。';
-    fix = '抜けやすい語尾・助詞を意識してもう一度録音するとさらに良くなります。';
-  } else if (score >= 40) {
-    good = '重要な単語はしっかり出ています。';
-    fix = '文を前半/後半に分けて、ゆっくりつなげて録音してみてください。';
-  }
-
   return {
     score,
-    good,
-    fix,
+    pronunciation: '発音の大枠は確認できました。',
+    intonation: '音の高低と語尾の下げ方を意識するとより自然です。',
+    fix: '語尾と助詞を意識してもう一度録音するとさらに良くなります。',
     model: expectedKorean
   };
+}
+
+function mapErrorToUserMessage(error) {
+  const message = String(error?.message || '');
+
+  if (message.includes('insufficient_quota')) {
+    return '現在、音声添削APIの利用上限に達しています。時間をおいて再度お試しください。';
+  }
+
+  if (message.includes('OpenAI transcription failed: 429')) {
+    return '現在アクセス集中のため音声文字起こしに失敗しました。少し時間をおいて再送してください。';
+  }
+
+  if (message.includes('Gemini feedback failed: 429')) {
+    return '現在アクセス集中のため音声添削に失敗しました。少し時間をおいて再送してください。';
+  }
+
+  if (message.includes('OpenAI transcription failed: 401') || message.includes('Gemini feedback failed: 401')) {
+    return '現在、音声機能の設定エラーが発生しています。運営側で確認中です。';
+  }
+
+  return '処理中にエラーが発生しました。少し時間をおいて再送してください。';
 }
 
 function buildLessonMessage(dayIndex) {
@@ -260,7 +374,18 @@ async function handleAudioMessage(event) {
   const recognizedText = await transcribeAudio(audioBuffer);
 
   const lesson = TRIAL_SENTENCES[pendingDayIndex];
-  const feedback = buildFeedback(lesson.korean, recognizedText);
+
+  let feedback;
+  try {
+    feedback = await generateGeminiAudioFeedback({
+      audioBuffer,
+      lesson,
+      recognizedText
+    });
+  } catch (geminiError) {
+    console.error('Gemini feedback fallback:', geminiError);
+    feedback = buildFallbackFeedback(lesson.korean, recognizedText);
+  }
 
   if (!progress.completedDays.includes(pendingDayIndex)) {
     progress.completedDays.push(pendingDayIndex);
@@ -273,9 +398,10 @@ async function handleAudioMessage(event) {
       type: 'text',
       text:
         `【Day ${lesson.day} フィードバック】\n` +
-        `あなたの発話: ${recognizedText || '(聞き取り結果なし)'}\n` +
-        `スコア: ${feedback.score}/100\n\n` +
-        `良かった点: ${feedback.good}\n` +
+        `あなたの発話(文字起こし): ${recognizedText || '(聞き取り結果なし)'}\n` +
+        `総合スコア: ${feedback.score}/100\n\n` +
+        `発音: ${feedback.pronunciation}\n` +
+        `イントネーション: ${feedback.intonation}\n` +
         `改善ポイント: ${feedback.fix}\n` +
         `模範文: ${feedback.model}`
     }
@@ -308,7 +434,7 @@ export default async function handler(req, res) {
     return json(res, 405, { ok: false, error: 'Method Not Allowed' });
   }
 
-  if (!LINE_CHANNEL_ACCESS_TOKEN || !LINE_CHANNEL_SECRET || !OPENAI_API_KEY) {
+  if (!LINE_CHANNEL_ACCESS_TOKEN || !LINE_CHANNEL_SECRET || !OPENAI_API_KEY || !GEMINI_API_KEY) {
     return json(res, 500, { ok: false, error: 'Missing env vars' });
   }
 
@@ -342,7 +468,7 @@ export default async function handler(req, res) {
       if (event.replyToken) {
         await replyMessage(event.replyToken, {
           type: 'text',
-          text: '処理中にエラーが発生しました。少し時間をおいて再送してください。'
+          text: mapErrorToUserMessage(error)
         });
       }
     }
