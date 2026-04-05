@@ -1,371 +1,1010 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>韓国語アウトプットジム | 話せる韓国語を12週間で</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap');
-  *{box-sizing:border-box;margin:0;padding:0;}
-  .lp{font-family:'Noto Sans JP',sans-serif;color:var(--color-text-primary);max-width:680px;margin:0 auto;padding:0 1.25rem;line-height:1.85;}
-  .hero{padding:3.5rem 0 2.5rem;text-align:center;border-bottom:0.5px solid var(--color-border-tertiary);}
-  .badge{display:inline-block;font-size:13px;font-weight:500;letter-spacing:0.06em;padding:6px 16px;border-radius:100px;background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary);margin-bottom:1.5rem;}
-  .hero-ko{font-family:'Noto Serif JP',serif;font-size:14px;color:var(--color-text-secondary);letter-spacing:0.12em;margin-bottom:0.6rem;}
-  .hero h1{font-family:'Noto Serif JP',serif;font-size:26px;font-weight:400;line-height:1.6;letter-spacing:0.02em;margin-bottom:1.2rem;}
-  .hero h1 em{font-style:normal;border-bottom:1.5px solid var(--color-text-primary);}
-  .hero-sub{font-size:15px;color:var(--color-text-secondary);line-height:1.9;margin-bottom:0.8rem;}
-  .prereg-box{background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.25rem 1.25rem;font-size:14px;color:var(--color-text-secondary);margin-bottom:1.5rem;line-height:1.85;text-align:left;}
-  .prereg-box strong{color:var(--color-text-primary);font-weight:500;}
-  .prereg-box .trial-note{font-size:12px;opacity:0.7;margin-top:0.6rem;display:block;line-height:1.7;}
-  .cta-btn{display:inline-block;background:var(--color-text-primary);color:var(--color-background-primary);font-family:'Noto Sans JP',sans-serif;font-size:15px;font-weight:500;padding:15px 36px;border-radius:var(--border-radius-md);cursor:pointer;border:none;letter-spacing:0.04em;transition:opacity 0.2s;text-decoration:none;}
-  .cta-btn:hover{opacity:0.78;}
-  .cta-btn-full{width:100%;text-align:center;display:block;}
-  .cta-sub{font-size:13px;color:var(--color-text-secondary);margin-top:0.6rem;}
-  .limited{margin-top:0.4rem;font-size:13px;color:var(--color-text-secondary);}
-  section{padding:2.5rem 0;border-bottom:0.5px solid var(--color-border-tertiary);}
-  .section-label{font-size:12px;font-weight:500;letter-spacing:0.12em;color:var(--color-text-secondary);text-transform:uppercase;margin-bottom:1.2rem;}
-  .section-title{font-family:'Noto Serif JP',serif;font-size:21px;font-weight:400;line-height:1.6;margin-bottom:1rem;}
-  .section-body{font-size:15px;color:var(--color-text-secondary);line-height:1.9;}
-  .pain-list{list-style:none;margin:1.5rem 0;}
-  .pain-list li{font-size:15px;color:var(--color-text-secondary);padding:11px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:flex-start;gap:10px;line-height:1.7;}
-  .pain-list li:last-child{border-bottom:none;}
-  .pain-mark{flex-shrink:0;width:20px;height:20px;border-radius:50%;background:var(--color-background-secondary);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--color-text-secondary);margin-top:2px;}
-  .flow-steps{display:flex;flex-direction:column;margin:1.5rem 0;}
-  .flow-step{display:flex;gap:16px;align-items:flex-start;padding:1rem 0;border-bottom:0.5px solid var(--color-border-tertiary);}
-  .flow-step:last-child{border-bottom:none;}
-  .step-num{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:0.5px solid var(--color-border-secondary);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--color-text-secondary);margin-top:2px;}
-  .step-title{font-size:15px;font-weight:500;margin-bottom:4px;}
-  .step-desc{font-size:14px;color:var(--color-text-secondary);line-height:1.8;}
-  .step-tag{display:inline-block;font-size:11px;padding:3px 10px;border-radius:100px;background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);margin-bottom:5px;letter-spacing:0.04em;}
-  .ai-badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--color-text-secondary);background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px 12px;margin-top:0.8rem;}
-  .ai-dot{width:6px;height:6px;border-radius:50%;background:var(--color-text-secondary);}
-  .grammar-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:1.5rem 0;}
-  .grammar-item{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;}
-  .grammar-week{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;font-weight:500;letter-spacing:0.06em;}
-  .grammar-name{font-size:14px;font-weight:500;}
-  .profile-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.75rem;margin:1.5rem 0;}
-  .profile-top{display:flex;gap:1.25rem;align-items:flex-start;margin-bottom:1.25rem;}
-  .profile-avatar{flex-shrink:0;width:72px;height:72px;border-radius:50%;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--color-text-secondary);text-align:center;line-height:1.4;}
-  .profile-name{font-size:17px;font-weight:500;margin-bottom:3px;}
-  .profile-sub{font-size:13px;color:var(--color-text-secondary);margin-bottom:0.75rem;}
-  .profile-tags{display:flex;flex-wrap:wrap;gap:6px;}
-  .profile-tag{font-size:12px;padding:4px 11px;border-radius:100px;background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);}
-  .profile-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:1.25rem 0;}
-  .stat-item{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center;}
-  .stat-num{font-family:'Noto Serif JP',serif;font-size:22px;font-weight:300;line-height:1;margin-bottom:5px;}
-  .stat-label{font-size:12px;color:var(--color-text-secondary);line-height:1.4;}
-  .profile-bio{font-size:14px;color:var(--color-text-secondary);line-height:1.9;padding-top:1.25rem;border-top:0.5px solid var(--color-border-tertiary);}
-  .profile-quote{margin-top:1rem;padding:0.9rem 1.1rem;border-left:2px solid var(--color-border-secondary);}
-  .profile-quote p{font-size:14px;color:var(--color-text-secondary);line-height:1.85;font-style:italic;}
-  .voice-placeholder{border:0.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:2rem;text-align:center;margin:1.5rem 0;}
-  .voice-placeholder-label{font-size:12px;color:var(--color-text-secondary);opacity:0.5;margin-bottom:0.5rem;letter-spacing:0.08em;}
-  .voice-placeholder-text{font-size:14px;color:var(--color-text-secondary);line-height:1.8;}
-  .price-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.75rem;margin:1.5rem 0;}
-  .price-monitor-label{font-size:12px;font-weight:500;letter-spacing:0.1em;color:var(--color-text-secondary);text-transform:uppercase;margin-bottom:0.6rem;}
-  .price-compare{display:flex;align-items:baseline;gap:12px;margin-bottom:0.4rem;flex-wrap:wrap;}
-  .price-original{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:300;color:var(--color-text-secondary);text-decoration:line-through;}
-  .price-main{font-family:'Noto Serif JP',serif;font-size:38px;font-weight:300;}
-  .price-off{font-size:13px;font-weight:500;padding:4px 12px;border-radius:100px;background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary);}
-  .price-payment{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem;}
-  .payment-option{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:14px;}
-  .payment-label{font-size:11px;color:var(--color-text-secondary);letter-spacing:0.08em;margin-bottom:5px;}
-  .payment-amount{font-size:16px;font-weight:500;}
-  .payment-note{font-size:12px;color:var(--color-text-secondary);margin-top:3px;}
-  .value-compare{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1.5rem;}
-  .vc-row{display:grid;grid-template-columns:1fr 1fr 1fr;}
-  .vc-header{background:var(--color-background-secondary);}
-  .vc-cell{padding:11px 12px;border-bottom:0.5px solid var(--color-border-tertiary);border-right:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);line-height:1.5;font-size:13px;}
-  .vc-cell:last-child{border-right:none;}
-  .vc-row:last-child .vc-cell{border-bottom:none;}
-  .vc-cell.highlight{color:var(--color-text-primary);font-weight:500;}
-  .vc-cell.label{color:var(--color-text-secondary);font-size:12px;}
-  .price-includes{list-style:none;margin-bottom:1.5rem;}
-  .price-includes li{font-size:14px;color:var(--color-text-secondary);padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;gap:10px;align-items:flex-start;line-height:1.7;}
-  .price-includes li:last-child{border-bottom:none;}
-  .check{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--color-text-primary);display:flex;align-items:center;justify-content:center;margin-top:2px;}
-  .li-note{font-size:12px;color:var(--color-text-secondary);display:block;margin-top:3px;opacity:0.7;}
-  .seats-bar{margin:1.5rem 0;padding:1rem 1.25rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);display:flex;align-items:center;gap:14px;}
-  .seats-dot{width:8px;height:8px;border-radius:50%;background:var(--color-text-primary);flex-shrink:0;animation:pulse 2s infinite;}
-  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
-  .seats-text{font-size:14px;color:var(--color-text-secondary);}
-  .seats-text strong{font-weight:500;color:var(--color-text-primary);}
-  .limited-reason{font-size:13px;color:var(--color-text-secondary);margin-top:1rem;line-height:1.7;}
-  .outcome-card{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.5rem;margin:1.5rem 0;}
-  .outcome-num{font-family:'Noto Serif JP',serif;font-size:44px;font-weight:300;line-height:1;margin-bottom:0.4rem;}
-  .outcome-unit{font-size:15px;color:var(--color-text-secondary);margin-bottom:1rem;}
-  .outcome-list{list-style:none;}
-  .outcome-list li{font-size:14px;color:var(--color-text-secondary);padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;gap:8px;line-height:1.7;}
-  .outcome-list li:last-child{border-bottom:none;}
-  .faq-list{margin:1.5rem 0;}
-  .faq-item{padding:1rem 0;border-bottom:0.5px solid var(--color-border-tertiary);}
-  .faq-item:last-child{border-bottom:none;}
-  .faq-q{font-size:15px;font-weight:500;margin-bottom:6px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;line-height:1.6;}
-  .toggle{flex-shrink:0;font-size:20px;color:var(--color-text-secondary);font-weight:300;line-height:1;margin-top:2px;transition:transform 0.2s;}
-  .faq-a{font-size:14px;color:var(--color-text-secondary);line-height:1.85;max-height:0;overflow:hidden;transition:max-height 0.3s ease;}
-  .faq-item.open .faq-a{max-height:280px;}
-  .faq-item.open .toggle{transform:rotate(45deg);}
-  .footer{padding:2.5rem 0;text-align:center;}
-  .footer-title{font-family:'Noto Serif JP',serif;font-size:19px;font-weight:400;margin-bottom:1rem;}
-  .footer-note{font-size:14px;color:var(--color-text-secondary);margin-bottom:1.5rem;line-height:1.9;}
-</style>
+    :root {
+      --color-bg: #ffffff;
+      --color-bg2: #f7f6f3;
+      --color-text: #1a1a1a;
+      --color-text2: #555550;
+      --color-text3: #888882;
+      --color-border: rgba(0,0,0,0.12);
+      --color-border2: rgba(0,0,0,0.22);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --font-sans: 'Noto Sans JP', sans-serif;
+      --font-serif: 'Noto Serif JP', serif;
+    }
 
-<div class="lp">
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 
-  <div class="hero">
-    <div class="badge">2026年10月5日 開講 — モニター5名限定</div>
-    <div class="hero-ko">말할 수 있는 당신이 된다</div>
-    <h1>文法は知っている。<br>でも、<em>話せない</em>。<br>その壁を、12週間で越える。</h1>
-    <p class="hero-sub">アウトプットだけに特化した韓国語スクール。<br>「知っている」状態から「話せる」状態へ。</p>
-    <div class="prereg-box">
-      <strong>LINE登録で「瞬間韓作文3日間体験」を無料プレゼント</strong><br>
-      1日1文、音声を送るだけ。AIがフィードバックを自動でお届けします。<br>ぜひ10月の開講にご参加ください。
-      <span class="trial-note">※体験版はAI添削のみの簡易版です。正式コースでは日記・ネイティブレッスン・コーチ面談・専用オンライン学習スペースでのやりとりが加わります。</span>
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 56px 0 48px;
+      text-align: center;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 6px 18px;
+      border-radius: 100px;
+      background: var(--color-bg2);
+      color: var(--color-text2);
+      border: 1px solid var(--color-border);
+      margin-bottom: 24px;
+    }
+
+    .hero-ko {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      color: var(--color-text3);
+      letter-spacing: 0.14em;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(24px, 6vw, 32px);
+      font-weight: 400;
+      line-height: 1.6;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      border-bottom: 2px solid var(--color-text);
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--color-text2);
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+
+    .prereg-box {
+      background: var(--color-bg2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      font-size: 15px;
+      color: var(--color-text2);
+      margin-bottom: 28px;
+      line-height: 1.85;
+      text-align: left;
+    }
+
+    .prereg-box strong {
+      color: var(--color-text);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .trial-note {
+      font-size: 12px;
+      color: var(--color-text3);
+      margin-top: 12px;
+      display: block;
+      line-height: 1.7;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: #06C755;
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 17px;
+      font-weight: 500;
+      padding: 18px 40px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      border: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .cta-btn:active { opacity: 0.85; }
+    .cta-btn-full { display: block; text-align: center; }
+
+    .cta-sub {
+      font-size: 13px;
+      color: var(--color-text3);
+      margin-top: 10px;
+    }
+
+    .limited {
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--color-text3);
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 48px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      color: var(--color-text3);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(20px, 5vw, 24px);
+      font-weight: 400;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .section-body {
+      font-size: 16px;
+      color: var(--color-text2);
+      line-height: 1.9;
+    }
+
+    /* ── PAIN LIST ── */
+    .pain-list { list-style: none; margin: 24px 0; }
+
+    .pain-list li {
+      font-size: 16px;
+      color: var(--color-text2);
+      padding: 14px 0;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      line-height: 1.7;
+    }
+
+    .pain-list li:last-child { border-bottom: none; }
+
+    .pain-mark {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--color-bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--color-text3);
+      margin-top: 2px;
+    }
+
+    /* ── OUTCOME ── */
+    .outcome-card {
+      border: 1px solid var(--color-border2);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .outcome-num {
+      font-family: var(--font-serif);
+      font-size: 56px;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .outcome-unit {
+      font-size: 16px;
+      color: var(--color-text2);
+      margin-bottom: 20px;
+    }
+
+    .outcome-list { list-style: none; }
+
+    .outcome-list li {
+      font-size: 15px;
+      color: var(--color-text2);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      gap: 10px;
+      line-height: 1.7;
+    }
+
+    .outcome-list li:last-child { border-bottom: none; }
+
+    /* ── PROFILE ── */
+    .profile-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border2);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .profile-top {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .profile-avatar {
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--color-bg2);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--color-text3);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .profile-name {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .profile-sub {
+      font-size: 13px;
+      color: var(--color-text3);
+      margin-bottom: 12px;
+    }
+
+    .profile-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .profile-tag {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--color-bg2);
+      color: var(--color-text2);
+      border: 1px solid var(--color-border);
+    }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .stat-item {
+      background: var(--color-bg2);
+      border-radius: var(--radius-sm);
+      padding: 14px 10px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--color-text3);
+      line-height: 1.4;
+    }
+
+    .profile-bio {
+      font-size: 15px;
+      color: var(--color-text2);
+      line-height: 1.9;
+      padding-top: 20px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .profile-quote {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-left: 3px solid var(--color-border2);
+    }
+
+    .profile-quote p {
+      font-size: 15px;
+      color: var(--color-text2);
+      line-height: 1.9;
+      font-style: italic;
+    }
+
+    /* ── VOICE PLACEHOLDER ── */
+    .voice-placeholder {
+      border: 1px dashed var(--color-border2);
+      border-radius: var(--radius-lg);
+      padding: 36px 24px;
+      text-align: center;
+      margin: 24px 0;
+    }
+
+    .voice-placeholder-label {
+      font-size: 11px;
+      color: var(--color-text3);
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+
+    .voice-placeholder-text {
+      font-size: 15px;
+      color: var(--color-text3);
+      line-height: 1.8;
+    }
+
+    /* ── FLOW STEPS ── */
+    .flow-steps { margin: 24px 0; }
+
+    .flow-step {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .flow-step:last-child { border-bottom: none; }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text2);
+      margin-top: 2px;
+    }
+
+    .step-tag {
+      display: inline-block;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--color-bg2);
+      color: var(--color-text3);
+      border: 1px solid var(--color-border);
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 15px;
+      color: var(--color-text2);
+      line-height: 1.8;
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: var(--color-text2);
+      background: var(--color-bg2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      margin-top: 10px;
+    }
+
+    .ai-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-text3);
+      flex-shrink: 0;
+    }
+
+    /* ── GRAMMAR ── */
+    .grammar-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 24px 0;
+    }
+
+    .grammar-item {
+      background: var(--color-bg2);
+      border-radius: var(--radius-sm);
+      padding: 14px 12px;
+    }
+
+    .grammar-week {
+      font-size: 11px;
+      color: var(--color-text3);
+      margin-bottom: 5px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    .grammar-name {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    /* ── PRICE ── */
+    .price-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border2);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      margin: 24px 0;
+    }
+
+    .price-monitor-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--color-text3);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .price-compare {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .price-original {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--color-text3);
+      text-decoration: line-through;
+    }
+
+    .price-main {
+      font-family: var(--font-serif);
+      font-size: 44px;
+      font-weight: 300;
+    }
+
+    .price-off {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: 100px;
+      background: var(--color-bg2);
+      color: var(--color-text2);
+      border: 1px solid var(--color-border);
+    }
+
+    .price-payment {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .payment-option {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+
+    .payment-label {
+      font-size: 11px;
+      color: var(--color-text3);
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .payment-amount {
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .payment-note {
+      font-size: 12px;
+      color: var(--color-text3);
+      margin-top: 4px;
+    }
+
+    /* ── VALUE COMPARE ── */
+    .value-compare {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .vc-row { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+    .vc-header { background: var(--color-bg2); }
+
+    .vc-cell {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--color-border);
+      border-right: 1px solid var(--color-border);
+      color: var(--color-text2);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .vc-cell:last-child { border-right: none; }
+    .vc-row:last-child .vc-cell { border-bottom: none; }
+    .vc-cell.highlight { color: var(--color-text); font-weight: 500; }
+    .vc-cell.label { color: var(--color-text3); font-size: 13px; }
+
+    /* ── PRICE INCLUDES ── */
+    .price-includes { list-style: none; margin-bottom: 24px; }
+
+    .price-includes li {
+      font-size: 15px;
+      color: var(--color-text2);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      line-height: 1.7;
+    }
+
+    .price-includes li:last-child { border-bottom: none; }
+
+    .check {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .li-note {
+      font-size: 13px;
+      color: var(--color-text3);
+      display: block;
+      margin-top: 3px;
+    }
+
+    .seats-bar {
+      margin: 24px 0;
+      padding: 16px 20px;
+      background: var(--color-bg2);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .seats-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #06C755;
+      flex-shrink: 0;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+    .seats-text { font-size: 15px; color: var(--color-text2); }
+    .seats-text strong { font-weight: 500; color: var(--color-text); }
+
+    .limited-reason {
+      font-size: 13px;
+      color: var(--color-text3);
+      margin-top: 14px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    /* ── FAQ ── */
+    .faq-list { margin: 24px 0; }
+
+    .faq-item {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .faq-item:last-child { border-bottom: none; }
+
+    .faq-q {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      line-height: 1.6;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .toggle {
+      flex-shrink: 0;
+      font-size: 24px;
+      color: var(--color-text3);
+      font-weight: 300;
+      line-height: 1;
+      margin-top: 0;
+      transition: transform 0.2s;
+    }
+
+    .faq-a {
+      font-size: 15px;
+      color: var(--color-text2);
+      line-height: 1.9;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.2s;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 300px;
+      padding-top: 12px;
+    }
+
+    .faq-item.open .toggle { transform: rotate(45deg); }
+
+    /* ── FOOTER ── */
+    .footer {
+      padding: 56px 0 48px;
+      text-align: center;
+    }
+
+    .footer-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .footer-note {
+      font-size: 15px;
+      color: var(--color-text2);
+      margin-bottom: 28px;
+      line-height: 1.9;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 400px) {
+      .profile-stats { grid-template-columns: repeat(3, 1fr); }
+      .grammar-grid { grid-template-columns: repeat(2, 1fr); }
+      .price-payment { grid-template-columns: 1fr; }
+      .vc-cell { padding: 10px 10px; font-size: 12px; }
+      .vc-cell.label { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="badge">2026年10月5日 開講 — モニター5名限定</div>
+      <div class="hero-ko">말할 수 있는 당신이 된다</div>
+      <h1>文法は知っている。<br>でも、<em>話せない</em>。<br>その壁を、12週間で越える。</h1>
+      <p class="hero-sub">アウトプットだけに特化した韓国語スクール。<br>「知っている」状態から「話せる」状態へ。</p>
+      <div class="prereg-box">
+        <strong>LINE登録で「瞬間韓作文3日間体験」を無料プレゼント</strong>
+        1日1文、音声を送るだけ。AIがフィードバックを自動でお届けします。<br>ぜひ10月の開講にご参加ください。
+        <span class="trial-note">※体験版はAI添削のみの簡易版です。正式コースでは日記・ネイティブレッスン・コーチ面談・専用オンライン学習スペースでのやりとりが加わります。</span>
+      </div>
+      <a href="https://lin.ee/50VcRen" class="cta-btn" target="_blank">LINEで無料体験を受け取る ↗</a>
+      <p class="cta-sub">登録後、すぐに1日目の課題が届きます</p>
+      <p class="limited">モニター残り5席 · 正式開講 2026年10月5日</p>
     </div>
-    <a href="https://lin.ee/50VcRen" class="cta-btn" target="_blank">LINEで無料体験を受け取る ↗</a>
-    <p class="cta-sub">登録後、すぐに1日目の課題が届きます</p>
-    <p class="limited">モニター残り5席 · 正式開講 2026年10月5日</p>
-  </div>
 
-  <section>
-    <div class="section-label">こんな方へ</div>
-    <div class="section-title">「勉強してきたのに、<br>なぜか話せない」</div>
-    <ul class="pain-list">
-      <li><span class="pain-mark">✕</span>テキストで文法は覚えたのに、会話になると頭が真っ白になる</li>
-      <li><span class="pain-mark">✕</span>「안녕하세요」の後が続かない</li>
-      <li><span class="pain-mark">✕</span>韓国旅行や推し活で、もっと話せるようになりたい</li>
-      <li><span class="pain-mark">✕</span>独学では続かない。でも長期スクールは高すぎる</li>
-    </ul>
-    <p class="section-body">原因は、インプットが足りないのではなく、<strong style="color:var(--color-text-primary)">アウトプットが足りないこと</strong>です。このスクールは、話すための練習だけに集中します。</p>
-  </section>
-
-  <section>
-    <div class="section-label">12週間後の成果</div>
-    <div class="outcome-card">
-      <div class="outcome-num">5分</div>
-      <div class="outcome-unit">詰まりながらでも、会話が続く</div>
-      <ul class="outcome-list">
-        <li><span>—</span>自己紹介・近況・予定を自然に話せる</li>
-        <li><span>—</span>過去の経験や旅行のことを伝えられる</li>
-        <li><span>—</span>質問に対してとっさに答えが出てくる</li>
-        <li><span>—</span>完璧じゃなくても、やり取りが続く感覚がつかめる</li>
+    <!-- こんな方へ -->
+    <section>
+      <div class="section-label">こんな方へ</div>
+      <div class="section-title">「勉強してきたのに、<br>なぜか話せない」</div>
+      <ul class="pain-list">
+        <li><span class="pain-mark">✕</span>テキストで文法は覚えたのに、会話になると頭が真っ白になる</li>
+        <li><span class="pain-mark">✕</span>「안녕하세요」の後が続かない</li>
+        <li><span class="pain-mark">✕</span>韓国旅行や推し活で、もっと話せるようになりたい</li>
+        <li><span class="pain-mark">✕</span>独学では続かない。でも長期スクールは高すぎる</li>
       </ul>
-    </div>
-    <p class="section-body">「完璧に話せる」ではなく、<strong style="color:var(--color-text-primary)">「会話が途切れない」</strong>状態を目指します。</p>
-  </section>
+      <p class="section-body">原因は、インプットが足りないのではなく、<strong>アウトプットが足りないこと</strong>です。このスクールは、話すための練習だけに集中します。</p>
+    </section>
 
-  <section>
-    <div class="section-label">講師について</div>
-    <div class="section-title">「教えるプロ」が<br>設計したコースです。</div>
-    <div class="profile-card">
-      <div class="profile-top">
-        <div class="profile-avatar">顔写真<br>準備中</div>
-        <div>
-          <div class="profile-name">コーチ名</div>
-          <div class="profile-sub">韓国語コーチ（韓国在住経験）</div>
-          <div class="profile-tags">
-            <span class="profile-tag">韓国語 自然習得</span>
-            <span class="profile-tag">指導歴 10年以上</span>
-            <span class="profile-tag">翻訳実績あり</span>
+    <!-- 成果 -->
+    <section>
+      <div class="section-label">12週間後の成果</div>
+      <div class="outcome-card">
+        <div class="outcome-num">5分</div>
+        <div class="outcome-unit">詰まりながらでも、会話が続く</div>
+        <ul class="outcome-list">
+          <li><span>—</span>自己紹介・近況・予定を自然に話せる</li>
+          <li><span>—</span>過去の経験や旅行のことを伝えられる</li>
+          <li><span>—</span>質問に対してとっさに答えが出てくる</li>
+          <li><span>—</span>完璧じゃなくても、やり取りが続く感覚がつかめる</li>
+        </ul>
+      </div>
+      <p class="section-body">「完璧に話せる」ではなく、<strong>「会話が途切れない」</strong>状態を目指します。</p>
+    </section>
+
+    <!-- 講師 -->
+    <section>
+      <div class="section-label">講師について</div>
+      <div class="section-title">「教えるプロ」が<br>設計したコースです。</div>
+      <div class="profile-card">
+        <div class="profile-top">
+          <div class="profile-avatar">顔写真<br>準備中</div>
+          <div>
+            <div class="profile-name">コーチ名</div>
+            <div class="profile-sub">韓国語コーチ（韓国在住経験）</div>
+            <div class="profile-tags">
+              <span class="profile-tag">韓国語 自然習得</span>
+              <span class="profile-tag">指導歴 10年以上</span>
+              <span class="profile-tag">翻訳実績あり</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">指導人数</div></div>
+          <div class="stat-item"><div class="stat-num">99.5%</div><div class="stat-label">大学受験合格率</div></div>
+          <div class="stat-item"><div class="stat-num">5年</div><div class="stat-label">韓国での指導経験</div></div>
+        </div>
+        <div class="profile-bio">
+          韓国在住中、教育機関・企業を問わず日本語教師として200名以上を指導。日本の大学への留学受験専門クラスでは合格率99.5%を達成。芸能事務所や航空会社での翻訳実績も持つ。韓国語は10歳のときにドラマで自然に身につけた。
+          <div class="profile-quote">
+            <p>「99.5%」と書くと聞こえがいいですが、1名だけ、志望校に行かせてあげられなかった経験があります。その悔しさが、今も「一人ひとりに向き合う」という姿勢の原点になっています。</p>
           </div>
         </div>
       </div>
-      <div class="profile-stats">
-        <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">指導人数</div></div>
-        <div class="stat-item"><div class="stat-num">99.5%</div><div class="stat-label">大学受験合格率</div></div>
-        <div class="stat-item"><div class="stat-num">5年</div><div class="stat-label">韓国での指導経験</div></div>
-      </div>
-      <div class="profile-bio">
-        韓国在住中、教育機関・企業を問わず日本語教師として200名以上を指導。日本の大学への留学受験専門クラスでは合格率99.5%を達成。芸能事務所や航空会社での翻訳実績も持つ。韓国語は10歳のときにドラマで自然に身につけた。
-        <div class="profile-quote">
-          <p>「99.5%」と書くと聞こえがいいですが、1名だけ、志望校に行かせてあげられなかった経験があります。その悔しさが、今も「一人ひとりに向き合う」という姿勢の原点になっています。</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section>
-    <div class="section-label">受講生の声</div>
-    <div class="section-title">受講後の変化</div>
-    <div class="voice-placeholder">
-      <div class="voice-placeholder-label">COMING SOON</div>
-      <div class="voice-placeholder-text">モニター受講生の声・成果を<br>2026年10月以降に掲載予定です。</div>
-    </div>
-  </section>
+    <!-- 受講生の声 -->
+    <section>
+      <div class="section-label">受講生の声</div>
+      <div class="section-title">受講後の変化</div>
+      <div class="voice-placeholder">
+        <div class="voice-placeholder-label">COMING SOON</div>
+        <div class="voice-placeholder-text">モニター受講生の声・成果を<br>2026年10月以降に掲載予定です。</div>
+      </div>
+    </section>
 
-  <section>
-    <div class="section-label">設計思想</div>
-    <div class="section-title">「型 → 自動化 → 実戦」<br>の3ステップで反復する</div>
-    <div class="flow-steps">
-      <div class="flow-step">
-        <div class="step-num">1</div>
-        <div class="step-content">
-          <div class="step-tag">月〜金曜日</div>
-          <div class="step-title">瞬間韓作文（録音 · 5文）</div>
-          <div class="step-desc">同じ文法を負荷を変えながら5日間反復。型練習 → 単語入れ替え → 会話形式の順で自動化する。</div>
-          <div class="ai-badge"><span class="ai-dot"></span>AI添削 + コーチチェックつき</div>
+    <!-- 設計思想 -->
+    <section>
+      <div class="section-label">設計思想</div>
+      <div class="section-title">「型 → 自動化 → 実戦」<br>の3ステップで反復する</div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-tag">月〜金曜日</div>
+            <div class="step-title">瞬間韓作文（録音 · 5文）</div>
+            <div class="step-desc">同じ文法を負荷を変えながら5日間反復。型練習 → 単語入れ替え → 会話形式の順で自動化する。</div>
+            <div class="ai-badge"><span class="ai-dot"></span>AI添削 + コーチチェックつき</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-tag">月〜金曜日</div>
+            <div class="step-title">1文日記（テキスト + 録音）</div>
+            <div class="step-desc">練習した文法を自分の話に変換。実生活の言葉に落とし込むことで定着を加速する。</div>
+            <div class="ai-badge"><span class="ai-dot"></span>AI添削 + コーチチェックつき</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-tag">土日どちらか · 週1回</div>
+            <div class="step-title">ネイティブレッスン（20分 × 12回）</div>
+            <div class="step-desc">その週に練習した内容で実戦。作文チェック → テーマスピーチ → 講師との即興対話。レッスン後に詳細フィードバックあり。</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-tag">月2〜3回</div>
+            <div class="step-title">日本人コーチ面談</div>
+            <div class="step-desc">学習時間の確認・苦手分析・軌道修正。継続できる仕組みで、12週間やり切る。</div>
+          </div>
         </div>
       </div>
-      <div class="flow-step">
-        <div class="step-num">2</div>
-        <div class="step-content">
-          <div class="step-tag">月〜金曜日</div>
-          <div class="step-title">1文日記（テキスト + 録音）</div>
-          <div class="step-desc">練習した文法を自分の話に変換。実生活の言葉に落とし込むことで定着を加速する。</div>
-          <div class="ai-badge"><span class="ai-dot"></span>AI添削 + コーチチェックつき</div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="step-num">3</div>
-        <div class="step-content">
-          <div class="step-tag">土日どちらか · 週1回</div>
-          <div class="step-title">ネイティブレッスン（20分 × 12回）</div>
-          <div class="step-desc">その週に練習した内容で実戦。作文チェック → テーマスピーチ → 講師との即興対話。レッスン後に詳細フィードバックあり。</div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="step-num">4</div>
-        <div class="step-content">
-          <div class="step-tag">月2〜3回</div>
-          <div class="step-title">日本人コーチ面談</div>
-          <div class="step-desc">学習時間の確認・苦手分析・軌道修正。継続できる仕組みで、12週間やり切る。</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section>
-    <div class="section-label">カリキュラム</div>
-    <div class="section-title">12週間 × 12のコア文法</div>
-    <p class="section-body" style="margin-bottom:0.5rem;">1週間 = 1文法を使える状態にする。少数精鋭で確実に定着させる設計。</p>
-    <div class="grammar-grid">
-      <div class="grammar-item"><div class="grammar-week">Week 1</div><div class="grammar-name">現在・状態</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 2</div><div class="grammar-name">過去</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 3</div><div class="grammar-name">未来・予定</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 4</div><div class="grammar-name">理由</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 5</div><div class="grammar-name">希望</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 6</div><div class="grammar-name">義務</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 7</div><div class="grammar-name">経験</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 8</div><div class="grammar-name">可能</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 9</div><div class="grammar-name">比較</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 10</div><div class="grammar-name">仮定</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 11</div><div class="grammar-name">提案</div></div>
-      <div class="grammar-item"><div class="grammar-week">Week 12</div><div class="grammar-name">逆接</div></div>
-    </div>
-  </section>
+    <!-- カリキュラム -->
+    <section>
+      <div class="section-label">カリキュラム</div>
+      <div class="section-title">12週間 × 12のコア文法</div>
+      <p class="section-body" style="margin-bottom:16px;">1週間 = 1文法を使える状態にする。少数精鋭で確実に定着させる設計。</p>
+      <div class="grammar-grid">
+        <div class="grammar-item"><div class="grammar-week">Week 1</div><div class="grammar-name">現在・状態</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 2</div><div class="grammar-name">過去</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 3</div><div class="grammar-name">未来・予定</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 4</div><div class="grammar-name">理由</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 5</div><div class="grammar-name">希望</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 6</div><div class="grammar-name">義務</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 7</div><div class="grammar-name">経験</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 8</div><div class="grammar-name">可能</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 9</div><div class="grammar-name">比較</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 10</div><div class="grammar-name">仮定</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 11</div><div class="grammar-name">提案</div></div>
+        <div class="grammar-item"><div class="grammar-week">Week 12</div><div class="grammar-name">逆接</div></div>
+      </div>
+    </section>
 
-  <section>
-    <div class="section-label">料金</div>
-    <div class="price-card">
-      <div class="price-monitor-label">モニター特別価格</div>
-      <div class="price-compare">
-        <span class="price-original">¥98,000</span>
-        <span class="price-main">¥59,400</span>
-        <span class="price-off">40% OFF</span>
+    <!-- 料金 -->
+    <section>
+      <div class="section-label">料金</div>
+      <div class="price-card">
+        <div class="price-monitor-label">モニター特別価格</div>
+        <div class="price-compare">
+          <span class="price-original">¥98,000</span>
+          <span class="price-main">¥59,400</span>
+          <span class="price-off">40% OFF</span>
+        </div>
+        <div class="price-payment">
+          <div class="payment-option">
+            <div class="payment-label">一括払い</div>
+            <div class="payment-amount">¥59,400</div>
+            <div class="payment-note">税込</div>
+          </div>
+          <div class="payment-option">
+            <div class="payment-label">3分割払い</div>
+            <div class="payment-amount">¥19,800 × 3</div>
+            <div class="payment-note">税込 · 合計¥59,400</div>
+          </div>
+        </div>
+        <div class="value-compare">
+          <div class="vc-row vc-header">
+            <div class="vc-cell label"></div>
+            <div class="vc-cell label">一般的なスクール</div>
+            <div class="vc-cell label highlight">このコース</div>
+          </div>
+          <div class="vc-row">
+            <div class="vc-cell label">3ヶ月の費用</div>
+            <div class="vc-cell">15〜30万円</div>
+            <div class="vc-cell highlight">59,400円</div>
+          </div>
+          <div class="vc-row">
+            <div class="vc-cell label">学習スタイル</div>
+            <div class="vc-cell">インプット中心</div>
+            <div class="vc-cell highlight">アウトプット特化</div>
+          </div>
+          <div class="vc-row">
+            <div class="vc-cell label">個別フィードバック</div>
+            <div class="vc-cell">週1レッスンのみ</div>
+            <div class="vc-cell highlight">毎日</div>
+          </div>
+        </div>
+        <ul class="price-includes">
+          <li>
+            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>瞬間韓作文（録音5文）+ フィードバック<span class="li-note">月〜金曜日 · AI添削 + コーチチェック</span></span>
+          </li>
+          <li>
+            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>1文日記（テキスト + 録音）+ フィードバック<span class="li-note">月〜金曜日 · AI添削 + コーチチェック</span></span>
+          </li>
+          <li>
+            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>ネイティブレッスン 週1回（20分 × 12回）<span class="li-note">土日どちらか · Zoomにて · レッスン後フィードバックあり</span></span>
+          </li>
+          <li>
+            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>日本人コーチ面談 月2〜3回<span class="li-note">Zoomにて</span></span>
+          </li>
+          <li>
+            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>専用オンライン学習スペースへのアクセス<span class="li-note">課題の提出・フィードバックの受け取りはすべてここで完結</span></span>
+          </li>
+        </ul>
+        <div class="seats-bar">
+          <div class="seats-dot"></div>
+          <div class="seats-text"><strong>モニター残り5席</strong>（2026年10月5日開講 · 先着順）</div>
+        </div>
+        <p class="limited-reason">日本人コーチが週次で個別分析を行うため、<br>品質を守るために5名限定にしています。</p>
+        <br>
+        <a href="https://lin.ee/50VcRen" class="cta-btn cta-btn-full" target="_blank">LINEで申し込む ↗</a>
       </div>
-      <div class="price-payment">
-        <div class="payment-option">
-          <div class="payment-label">一括払い</div>
-          <div class="payment-amount">¥59,400</div>
-          <div class="payment-note">税込</div>
-        </div>
-        <div class="payment-option">
-          <div class="payment-label">3分割払い</div>
-          <div class="payment-amount">¥19,800 × 3</div>
-          <div class="payment-note">税込 · 合計¥59,400</div>
-        </div>
-      </div>
-      <div class="value-compare">
-        <div class="vc-row vc-header">
-          <div class="vc-cell label"></div>
-          <div class="vc-cell label">一般的なスクール</div>
-          <div class="vc-cell label highlight">このコース</div>
-        </div>
-        <div class="vc-row">
-          <div class="vc-cell label">3ヶ月の費用</div>
-          <div class="vc-cell">15〜30万円</div>
-          <div class="vc-cell highlight">59,400円</div>
-        </div>
-        <div class="vc-row">
-          <div class="vc-cell label">学習スタイル</div>
-          <div class="vc-cell">インプット中心</div>
-          <div class="vc-cell highlight">アウトプット特化</div>
-        </div>
-        <div class="vc-row">
-          <div class="vc-cell label">個別フィードバック</div>
-          <div class="vc-cell">週1レッスンのみ</div>
-          <div class="vc-cell highlight">毎日</div>
-        </div>
-      </div>
-      <ul class="price-includes">
-        <li>
-          <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="var(--color-background-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span>瞬間韓作文（録音5文）+ フィードバック<span class="li-note">月〜金曜日 · AI添削 + コーチチェック</span></span>
-        </li>
-        <li>
-          <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="var(--color-background-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span>1文日記（テキスト + 録音）+ フィードバック<span class="li-note">月〜金曜日 · AI添削 + コーチチェック</span></span>
-        </li>
-        <li>
-          <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="var(--color-background-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span>ネイティブレッスン 週1回（20分 × 12回）<span class="li-note">土日どちらか · Zoomにて · レッスン後フィードバックあり</span></span>
-        </li>
-        <li>
-          <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="var(--color-background-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span>日本人コーチ面談 月2〜3回<span class="li-note">Zoomにて</span></span>
-        </li>
-        <li>
-          <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="var(--color-background-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span>専用オンライン学習スペースへのアクセス<span class="li-note">課題の提出・フィードバックの受け取りはすべてここで完結</span></span>
-        </li>
-      </ul>
-      <div class="seats-bar">
-        <div class="seats-dot"></div>
-        <div class="seats-text"><strong>モニター残り5席</strong>（2026年10月5日開講 · 先着順）</div>
-      </div>
-      <p class="limited-reason">日本人コーチが週次で個別分析を行うため、<br>品質を守るために5名限定にしています。</p>
-      <br>
-      <a href="https://lin.ee/50VcRen" class="cta-btn cta-btn-full" target="_blank">LINEで申し込む ↗</a>
-    </div>
-  </section>
+    </section>
 
-  <section>
-    <div class="section-label">よくある質問</div>
-    <div class="faq-list">
-      <div class="faq-item">
-        <div class="faq-q"><span>どんな方が対象ですか？</span><span class="toggle">+</span></div>
-        <div class="faq-a">ハングルが読めて、初級文法（「〜です」「〜ました」など）を一通り勉強したことがある方が対象です。「勉強したけど話せない」という方に最適なコースです。</div>
+    <!-- FAQ -->
+    <section>
+      <div class="section-label">よくある質問</div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q"><span>どんな方が対象ですか？</span><span class="toggle">+</span></div>
+          <div class="faq-a">ハングルが読めて、初級文法（「〜です」「〜ました」など）を一通り勉強したことがある方が対象です。「勉強したけど話せない」という方に最適なコースです。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q"><span>1日どのくらい時間が必要ですか？</span><span class="toggle">+</span></div>
+          <div class="faq-a">平日は瞬間作文と日記合わせて15〜20分が目安です。週末のレッスンは20分。スキマ時間で続けられる設計にしています。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q"><span>支払い方法を教えてください。</span><span class="toggle">+</span></div>
+          <div class="faq-a">一括払い（¥59,400）と3分割払い（¥19,800 × 3回）からお選びいただけます。どちらも税込です。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q"><span>フィードバックはどのように届きますか？</span><span class="toggle">+</span></div>
+          <div class="faq-a">瞬間韓作文・1文日記どちらも、専用オンライン学習スペース上でAI添削とコーチチェックのフィードバックをお届けします。ネイティブレッスン後も詳細なフィードバックをお渡しします。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q"><span>モニターとは何ですか？</span><span class="toggle">+</span></div>
+          <div class="faq-a">第1期は正規価格（¥98,000）から40%OFFのモニター特別価格でご参加いただけます。お願いしたいことは2点あります。ひとつは、学習の成果や感想をご自身のSNSでシェアいただけると助かります（任意・強制ではありません）。もうひとつは、コーチのSNSでモニターの成果を紹介させていただく場合があります。その際は必ず事前にご本人へ確認・許可をいただいた上で掲載します。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q"><span>無料体験と正式コースは何が違いますか？</span><span class="toggle">+</span></div>
+          <div class="faq-a">LINE上の無料体験は瞬間韓作文1文のAI添削のみの簡易版です。正式コースでは専用オンライン学習スペース上での課題管理・瞬間韓作文5文・1文日記・ネイティブレッスン・コーチ面談が加わり、12週間を通じてコーチが伴走します。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q"><span>60代でもついていけますか？</span><span class="toggle">+</span></div>
+          <div class="faq-a">はい。毎日の課題は15〜20分と短く、無理なく続けられる量に設計しています。レッスンはZoomで行うためご自宅から参加できます。スマートフォンとLINEが使えれば参加できます。操作でお困りの際はコーチがサポートします。</div>
+        </div>
       </div>
-      <div class="faq-item">
-        <div class="faq-q"><span>1日どのくらい時間が必要ですか？</span><span class="toggle">+</span></div>
-        <div class="faq-a">平日は瞬間作文と日記合わせて15〜20分が目安です。週末のレッスンは20分。スキマ時間で続けられる設計にしています。</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span>支払い方法を教えてください。</span><span class="toggle">+</span></div>
-        <div class="faq-a">一括払い（¥59,400）と3分割払い（¥19,800 × 3回）からお選びいただけます。どちらも税込です。</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span>フィードバックはどのように届きますか？</span><span class="toggle">+</span></div>
-        <div class="faq-a">瞬間韓作文・1文日記どちらも、専用オンライン学習スペース上でAI添削とコーチチェックのフィードバックをお届けします。ネイティブレッスン後も詳細なフィードバックをお渡しします。</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span>モニターとは何ですか？</span><span class="toggle">+</span></div>
-        <div class="faq-a">第1期は正規価格（¥98,000）から40%OFFのモニター特別価格でご参加いただけます。お願いしたいことは2点あります。ひとつは、学習の成果や感想をご自身のSNSでシェアいただけると助かります（任意・強制ではありません）。もうひとつは、コーチのSNSでモニターの成果を紹介させていただく場合があります。その際は必ず事前にご本人へ確認・許可をいただいた上で掲載します。</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span>無料体験と正式コースは何が違いますか？</span><span class="toggle">+</span></div>
-        <div class="faq-a">LINE上の無料体験は瞬間韓作文1文のAI添削のみの簡易版です。正式コースでは専用オンライン学習スペース上での課題管理・瞬間韓作文5文・1文日記・ネイティブレッスン・コーチ面談が加わり、12週間を通じてコーチが伴走します。</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q"><span>60代でもついていけますか？</span><span class="toggle">+</span></div>
-        <div class="faq-a">はい。毎日の課題は15〜20分と短く、無理なく続けられる量に設計しています。レッスンはZoomで行うためご自宅から参加できます。スマートフォンとLINEが使えれば参加できます。操作でお困りの際はコーチがサポートします。</div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <div class="footer">
-    <div class="footer-title">まず、無料で体験してみてください。</div>
-    <p class="footer-note">3日間の体験を経て、ぜひ10月の開講にご参加ください。</p>
-    <a href="https://lin.ee/50VcRen" class="cta-btn" target="_blank">LINEで無料体験を受け取る ↗</a>
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-title">まず、無料で体験してみてください。</div>
+      <p class="footer-note">3日間の体験を経て、<br>ぜひ10月の開講にご参加ください。</p>
+      <a href="https://lin.ee/50VcRen" class="cta-btn" target="_blank">LINEで無料体験を受け取る ↗</a>
+    </div>
+
   </div>
 
-</div>
-<script>
-document.querySelectorAll('.faq-q').forEach(q=>{
-  q.addEventListener('click',()=>{ q.closest('.faq-item').classList.toggle('open'); });
-});
-</script>
+  <script>
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.addEventListener('click', () => {
+        q.closest('.faq-item').classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>
