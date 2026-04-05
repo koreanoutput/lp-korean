@@ -15,7 +15,7 @@ await fetch('https://api.line.me/v2/bot/message/reply', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer YOUR_CHANNEL_ACCESS_TOKEN`
+    'Authorization': `Bearer DOd6LxMqMkN5fk+EA28SLhl02rOfP3FzEenBb7M49cmTPeM7mB5jrkM+xlA35EoHJVNfhaf3/s+LKqKb9YaaVptr5XqTWR3zB+HkB2/bql3WqSTDdk5u0bL3fmWw9c3r3VQHsxwDmJ2qQIqEpiILHgdB04t89/1O/w1cDnyilFU=`
   },
   body: JSON.stringify({
     replyToken: replyToken,
