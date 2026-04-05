@@ -7,7 +7,7 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
 const TRIAL_SENTENCES = [
-  { day: 1, japanese: '私は毎朝、韓国語を10分勉強します。', korean: '저는 매일 아침 한국어를 10분 공부해요.' },
+  { day: 1, japanese: '私は毎朝、韓国語を10分勉強します。', korean: '저는 매일 아침에 한국어를 10분 공부해요.' },
   { day: 2, japanese: '昨日は仕事が終わってから友達とご飯を食べました。', korean: '어제는 일이 끝난 후에 친구랑 밥을 먹었어요.' },
   { day: 3, japanese: '来週、韓国に旅行に行く予定です。', korean: '다음 주에 한국으로 여행 갈 예정이에요.' }
 ];
