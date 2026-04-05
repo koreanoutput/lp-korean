@@ -5,7 +5,21 @@ export default async function handler(req, res) {
     if (event.type === 'message' && event.message.type === 'audio') {
       
       const replyToken = event.replyToken;
+      const messageId = event.message.id;
 
+      // 音声ファイルを取得
+      const audioRes = await fetch(`https://api-data.line.me/v2/bot/message/${messageId}/content`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer YOUR_CHANNEL_ACCESS_TOKEN`
+        }
+      });
+
+      const audioBuffer = await audioRes.arrayBuffer();
+
+      console.log('音声サイズ:', audioBuffer.byteLength);
+
+      // とりあえず返信
       await fetch('https://api.line.me/v2/bot/message/reply', {
         method: 'POST',
         headers: {
@@ -17,7 +31,7 @@ export default async function handler(req, res) {
           messages: [
             {
               type: 'text',
-              text: '音声ありがとう！解析するね！'
+              text: '音声受け取ったよ！解析するね！'
             }
           ]
         })
