@@ -7,9 +7,24 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
 const TRIAL_SENTENCES = [
-  { day: 1, japanese: '私は毎朝、韓国語を10分勉強します。', korean: '저는 매일 아침에 한국어를 10분 공부해요.' },
-  { day: 2, japanese: '昨日は仕事が終わってから友達とご飯を食べました。', korean: '어제는 일이 끝난 후에 친구랑 밥을 먹었어요.' },
-  { day: 3, japanese: '来週、韓国に旅行に行く予定です。', korean: '다음 주에 한국으로 여행 갈 예정이에요.' }
+  {
+    day: 1,
+    japanesePrompt: '私は毎朝コーヒーを飲みます。',
+    modelAnswer: '저는 매일 아침에 커피를 마셔요.',
+    checkPoint: '「아침에」の에を入れること。習慣は「마셔요」の形が自然です。'
+  },
+  {
+    day: 2,
+    japanesePrompt: '私は今、家で仕事をしています。',
+    modelAnswer: '저는 지금 집에서 일하고 있어요.',
+    checkPoint: '「지금 + -고 있어요」で今まさにしている状態を表せるかを確認。'
+  },
+  {
+    day: 3,
+    japanesePrompt: '今日は＿＿をしています。（空欄は自由）',
+    modelAnswer: '오늘은 ____ 하고 있어요.',
+    checkPoint: '空欄に自分の単語を入れて「오늘은 + 名詞/動詞語幹 + 하고 있어요」を作ること。'
+  }
 ];
 
 /**
@@ -30,10 +45,7 @@ function json(res, status, body) {
 
 function verifyLineSignature(rawBody, signature) {
   if (!LINE_CHANNEL_SECRET || !signature) return false;
-  const expected = crypto
-    .createHmac('sha256', LINE_CHANNEL_SECRET)
-    .update(rawBody)
-    .digest('base64');
+  const expected = crypto.createHmac('sha256', LINE_CHANNEL_SECRET).update(rawBody).digest('base64');
   return expected === signature;
 }
 
@@ -50,7 +62,8 @@ function startTrial(userId) {
   const progress = {
     userId,
     startedAt,
-    completedDays: []
+    completedDays: [],
+    selectedDayIndex: null
   };
   userProgressStore.set(userId, progress);
   return progress;
@@ -71,6 +84,10 @@ function getAvailableDayIndex(startedAtISO) {
 
 function formatDate(isoString) {
   return new Date(isoString).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+}
+
+function saveProgress(progress) {
+  userProgressStore.set(progress.userId, progress);
 }
 
 async function replyMessage(replyToken, messages) {
@@ -165,8 +182,8 @@ async function generateGeminiAudioFeedback({ audioBuffer, lesson, recognizedText
   const prompt = [
     'あなたは韓国語コーチです。',
     '学習者の音声（韓国語）を聞いて、発音とイントネーションを評価してください。',
-    `課題（日本語）: ${lesson.japanese}`,
-    `目標文（韓国語）: ${lesson.korean}`,
+    `課題（日本語）: ${lesson.japanesePrompt}`,
+    `模範解答（韓国語）: ${lesson.modelAnswer}`,
     `文字起こし結果: ${recognizedText || '(空)'}`,
     '',
     '次のJSONだけを返してください。説明文は不要です。',
@@ -174,7 +191,8 @@ async function generateGeminiAudioFeedback({ audioBuffer, lesson, recognizedText
     '条件:',
     '- scoreは0-100の整数',
     '- pronunciation, intonation, fix, model はそれぞれ120文字以内',
-    '- modelは学習者向けの自然な模範文'
+    '- modelは学習者向けの自然な模範文',
+    `添削チェックポイント: ${lesson.checkPoint}`
   ].join('\n');
 
   const base64Audio = Buffer.from(audioBuffer).toString('base64');
@@ -226,15 +244,12 @@ async function generateGeminiAudioFeedback({ audioBuffer, lesson, recognizedText
     pronunciation: parsed.pronunciation || '発音の要点を確認できませんでした。',
     intonation: parsed.intonation || 'イントネーションの要点を確認できませんでした。',
     fix: parsed.fix || 'もう一度ゆっくり録音してみてください。',
-    model: parsed.model || lesson.korean
+    model: parsed.model || lesson.modelAnswer
   };
 }
 
 function normalizeKorean(text) {
-  return (text || '')
-    .toLowerCase()
-    .replace(/[\s\p{P}\p{S}]/gu, '')
-    .trim();
+  return (text || '').toLowerCase().replace(/[\s\p{P}\p{S}]/gu, '').trim();
 }
 
 function levenshtein(a, b) {
@@ -245,11 +260,7 @@ function levenshtein(a, b) {
   for (let i = 1; i <= a.length; i += 1) {
     for (let j = 1; j <= b.length; j += 1) {
       const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      dp[i][j] = Math.min(
-        dp[i - 1][j] + 1,
-        dp[i][j - 1] + 1,
-        dp[i - 1][j - 1] + cost
-      );
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
     }
   }
 
@@ -305,16 +316,12 @@ function mapErrorToUserMessage(error) {
   return '処理中にエラーが発生しました。少し時間をおいて再送してください。';
 }
 
-function buildLessonMessage(dayIndex) {
-  const lesson = TRIAL_SENTENCES[dayIndex];
-  return {
-    type: 'text',
-    text:
-      `【3日間無料体験 Day ${lesson.day}/3】\n` +
-      `次の1文を韓国語で録音して送ってください🎙️\n\n` +
-      `日本語: ${lesson.japanese}\n` +
-      `目標文: ${lesson.korean}`
-  };
+function parseDayFromText(text) {
+  const normalized = String(text || '').trim();
+  const match = normalized.match(/([1-3])\s*日目/);
+  if (!match) return null;
+  const day = Number(match[1]);
+  return Number.isInteger(day) ? day - 1 : null;
 }
 
 async function handleFollow(event) {
@@ -327,11 +334,64 @@ async function handleFollow(event) {
     {
       type: 'text',
       text:
-        '友だち追加ありがとうございます！\n' +
-        '今日から3日間、1日1文の瞬間韓作文体験をお届けします。'
-    },
-    buildLessonMessage(0)
+        'さっそく1日目の課題をお送りします(loveletter)\n' +
+        '─────────────\n' +
+        '3日間のテーマ\n' +
+        '文法：現在・状態（〜です／〜しています）\n' +
+        'シーン：日常・自己紹介\n' +
+        '同じ文法を3日間、少しずつ負荷を上げながら練習します。\n' +
+        '─────────────\n' +
+        '【1日目：まず1文、言ってみる】\n' +
+        '以下の日本語を韓国語で言って、音声を送ってください。\n' +
+        '「私は毎朝コーヒーを飲みます。」\n' +
+        '※ 分からなくてOKです。知っている単語だけ並べてみてください。\n' +
+        '録音してこのトーク画面に送るだけです。\n' +
+        '─────────────\n' +
+        '送ってくれたらAIがフィードバックをお返しします。\n' +
+        '正解は添削と一緒にお届けします。\n' +
+        '※ 体験版は1文のみです。正式コースでは毎日5文に取り組みます。\n' +
+        'ご質問はいつでもどうぞ。\n' +
+        'コースの詳細・お申し込みはこちら→【URL】'
+    }
   ]);
+}
+
+async function handleTextMessage(event) {
+  const userId = event.source?.userId;
+  const input = event.message?.text;
+  if (!userId || !input) return;
+
+  const progress = getOrCreateProgress(userId);
+  const dayIndex = parseDayFromText(input);
+
+  if (dayIndex === null) return;
+
+  const availableDayIndex = getAvailableDayIndex(progress.startedAt);
+
+  if (dayIndex > availableDayIndex) {
+    const unlockDate = new Date(new Date(progress.startedAt).getTime() + DAY_MS * dayIndex).toISOString();
+    await replyMessage(event.replyToken, {
+      type: 'text',
+      text: `まだDay ${dayIndex + 1} は解放されていません。${formatDate(unlockDate)} 以降に取り組めます。`
+    });
+    return;
+  }
+
+  if (progress.completedDays.includes(dayIndex)) {
+    await replyMessage(event.replyToken, {
+      type: 'text',
+      text: `Day ${dayIndex + 1} は提出済みです。別の日の課題に進んでください。`
+    });
+    return;
+  }
+
+  progress.selectedDayIndex = dayIndex;
+  saveProgress(progress);
+
+  await replyMessage(event.replyToken, {
+    type: 'text',
+    text: `Day ${dayIndex + 1} を受け付けました。\nこのまま録音を送ってください。`
+  });
 }
 
 async function handleAudioMessage(event) {
@@ -343,29 +403,38 @@ async function handleAudioMessage(event) {
   const progress = getOrCreateProgress(userId);
   const availableDayIndex = getAvailableDayIndex(progress.startedAt);
 
-  const pendingDayIndex = TRIAL_SENTENCES.findIndex((_, idx) => {
-    if (idx > availableDayIndex) return false;
-    return !progress.completedDays.includes(idx);
-  });
+  // Day1が未提出なら、Day指定なしでもDay1として受け付ける
+  const day1Incomplete = !progress.completedDays.includes(0) && availableDayIndex >= 0;
 
-  if (pendingDayIndex === -1) {
-    if (progress.completedDays.length >= TRIAL_SENTENCES.length) {
-      await replyMessage(event.replyToken, {
-        type: 'text',
-        text:
-          '3日間の無料体験は完了です🎉\n' +
-          'ご参加ありがとうございました！本コースの案内をご希望なら「本コース」と送ってください。'
-      });
-      return;
-    }
+  let targetDayIndex = progress.selectedDayIndex;
 
-    const nextDay = Math.min(progress.completedDays.length, TRIAL_SENTENCES.length - 1);
-    const nextDate = new Date(new Date(progress.startedAt).getTime() + DAY_MS * nextDay).toISOString();
+  if (targetDayIndex === null && day1Incomplete) {
+    targetDayIndex = 0;
+  }
+
+  if (targetDayIndex === null) {
     await replyMessage(event.replyToken, {
       type: 'text',
       text:
-        `今日の提出は完了しています✅\n` +
-        `次の課題は ${formatDate(nextDate)} 以降に配信されます。`
+        '録音を受け取りましたが、何日目の課題か不明です。\n' +
+        '先に「2日目」または「3日目」と送ってから録音してください。'
+    });
+    return;
+  }
+
+  if (targetDayIndex > availableDayIndex) {
+    const unlockDate = new Date(new Date(progress.startedAt).getTime() + DAY_MS * targetDayIndex).toISOString();
+    await replyMessage(event.replyToken, {
+      type: 'text',
+      text: `Day ${targetDayIndex + 1} はまだ解放されていません。${formatDate(unlockDate)} 以降に取り組めます。`
+    });
+    return;
+  }
+
+  if (progress.completedDays.includes(targetDayIndex)) {
+    await replyMessage(event.replyToken, {
+      type: 'text',
+      text: `Day ${targetDayIndex + 1} は提出済みです。別の日の課題を指定してください。`
     });
     return;
   }
@@ -373,7 +442,7 @@ async function handleAudioMessage(event) {
   const audioBuffer = await getAudioContent(messageId);
   const recognizedText = await transcribeAudio(audioBuffer);
 
-  const lesson = TRIAL_SENTENCES[pendingDayIndex];
+  const lesson = TRIAL_SENTENCES[targetDayIndex];
 
   let feedback;
   try {
@@ -384,14 +453,16 @@ async function handleAudioMessage(event) {
     });
   } catch (geminiError) {
     console.error('Gemini feedback fallback:', geminiError);
-    feedback = buildFallbackFeedback(lesson.korean, recognizedText);
+    feedback = buildFallbackFeedback(lesson.modelAnswer, recognizedText);
   }
 
-  if (!progress.completedDays.includes(pendingDayIndex)) {
-    progress.completedDays.push(pendingDayIndex);
+  progress.selectedDayIndex = null;
+
+  if (!progress.completedDays.includes(targetDayIndex)) {
+    progress.completedDays.push(targetDayIndex);
     progress.completedDays.sort((a, b) => a - b);
-    userProgressStore.set(userId, progress);
   }
+  saveProgress(progress);
 
   const messages = [
     {
@@ -407,22 +478,24 @@ async function handleAudioMessage(event) {
     }
   ];
 
-  const nextDayIndex = pendingDayIndex + 1;
-  if (nextDayIndex < TRIAL_SENTENCES.length) {
-    const nextDate = new Date(new Date(progress.startedAt).getTime() + DAY_MS * nextDayIndex).toISOString();
+  if (progress.completedDays.length >= TRIAL_SENTENCES.length) {
     messages.push({
       type: 'text',
       text:
-        `次の課題（Day ${nextDayIndex + 1}）は ${formatDate(nextDate)} 以降に取り組めます。`
+        '3日間の無料体験、完走おめでとうございます！🎉\n' +
+        'ご参加ありがとうございました。\n\n' +
+        '「続けたい」「もっとやりたい」と感じていただけていたら、ぜひ正式コースへ。\n' +
+        '10月5日開講・モニター5名限定です。\n' +
+        '正規価格 ¥98,000のところ、モニター特別価格 ¥59,400（40%OFF）でご参加いただけます。\n' +
+        '【申し込みフォームURL】\n' +
+        'ご質問はお気軽にどうぞ。明日も改めてご案内をお送りします。'
     });
-
-    if (availableDayIndex >= nextDayIndex && !progress.completedDays.includes(nextDayIndex)) {
-      messages.push(buildLessonMessage(nextDayIndex));
-    }
   } else {
     messages.push({
       type: 'text',
-      text: '3日間の無料体験、完走おめでとうございます！🎉'
+      text:
+        '次の提出時は、先に「2日目」または「3日目」と送ってから録音してください。\n' +
+        '（1日目のみ指定なし提出OK）'
     });
   }
 
@@ -458,6 +531,10 @@ export default async function handler(req, res) {
     try {
       if (event.type === 'follow') {
         await handleFollow(event);
+      }
+
+      if (event.type === 'message' && event.message?.type === 'text') {
+        await handleTextMessage(event);
       }
 
       if (event.type === 'message' && event.message?.type === 'audio') {
