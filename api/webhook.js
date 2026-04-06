@@ -11,7 +11,7 @@ const TRIAL_SENTENCES = [
     day: 1,
     japanesePrompt: '私は毎朝コーヒーを飲みます。',
     modelAnswer: '저는 매일 아침에 커피를 마셔요.',
-    checkPoint: '「아침에」の에を入れること。日常会話では「마십니다」より「마셔요」の形が自然です。'
+    checkPoint: '「아침에」の에を入れること。「커피」が「코피」になっていないか確認。日常会話では「마십니다」より「마셔요」の形が自然です。'
   },
   {
     day: 2,
@@ -22,8 +22,8 @@ const TRIAL_SENTENCES = [
   {
     day: 3,
     japanesePrompt: '今日は＿＿をしています。（空欄は自由）',
-    modelAnswer: '오늘은 ____ 하고 있어요.',
-    checkPoint: '空欄に自分の単語を入れて「오늘은 + 動詞の語幹 + 고 있어요」を作ること。'
+    modelAnswer: '오늘은 ____ 고 있어요.',
+    checkPoint: '空欄に自分で単語を入れて「오늘은 + 動詞の語幹 + 고 있어요」を作ること。'
   }
 ];
 
