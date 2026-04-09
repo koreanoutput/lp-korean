@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --color-bg: #ffffff;
       --color-bg2: #f7f6f3;
@@ -24,705 +23,154 @@
       --font-sans: 'Noto Sans JP', sans-serif;
       --font-serif: 'Noto Serif JP', serif;
     }
-
     html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+    body { font-family: var(--font-sans); color: var(--color-text); background: var(--color-bg); line-height: 1.8; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }
 
-    body {
-      font-family: var(--font-sans);
-      color: var(--color-text);
-      background: var(--color-bg);
-      line-height: 1.8;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .wrap {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    /* ── HERO ── */
-    .hero {
-      padding: 56px 0 48px;
-      text-align: center;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      padding: 6px 18px;
-      border-radius: 100px;
-      background: var(--color-bg2);
-      color: var(--color-text2);
-      border: 1px solid var(--color-border);
-      margin-bottom: 24px;
-    }
-
-    .hero-ko {
-      font-family: var(--font-serif);
-      font-size: 14px;
-      color: var(--color-text3);
-      letter-spacing: 0.14em;
-      margin-bottom: 10px;
-    }
-
-    .hero h1 {
-      font-family: var(--font-serif);
-      font-size: clamp(24px, 6vw, 32px);
-      font-weight: 400;
-      line-height: 1.6;
-      letter-spacing: 0.02em;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      border-bottom: 2px solid var(--color-text);
-    }
-
-    .hero-sub {
-      font-size: 16px;
-      color: var(--color-text2);
-      line-height: 1.9;
-      margin-bottom: 16px;
-    }
-
-    .prereg-box {
-      background: var(--color-bg2);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 20px 22px;
-      font-size: 15px;
-      color: var(--color-text2);
-      margin-bottom: 28px;
-      line-height: 1.85;
-      text-align: left;
-    }
-
-    .prereg-box strong {
-      color: var(--color-text);
-      font-weight: 500;
-      display: block;
-      margin-bottom: 6px;
-      font-size: 16px;
-    }
-
-    .trial-note {
-      font-size: 12px;
-      color: var(--color-text3);
-      margin-top: 12px;
-      display: block;
-      line-height: 1.7;
-    }
-
-    .cta-btn {
-      display: inline-block;
-      background: #06C755;
-      color: #ffffff;
-      font-family: var(--font-sans);
-      font-size: 17px;
-      font-weight: 500;
-      padding: 18px 40px;
-      border-radius: var(--radius-md);
-      text-decoration: none;
-      letter-spacing: 0.04em;
-      border: none;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    .hero { padding: 56px 0 48px; text-align: center; border-bottom: 1px solid var(--color-border); }
+    .badge { display: inline-block; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; padding: 6px 18px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text2); border: 1px solid var(--color-border); margin-bottom: 24px; }
+    .hero-ko { font-family: var(--font-serif); font-size: 14px; color: var(--color-text3); letter-spacing: 0.14em; margin-bottom: 10px; }
+    .service-name { font-family: var(--font-serif); font-size: 13px; color: var(--color-text3); letter-spacing: 0.1em; margin-bottom: 6px; }
+    .hero h1 { font-family: var(--font-serif); font-size: clamp(24px, 6vw, 32px); font-weight: 400; line-height: 1.65; letter-spacing: 0.02em; margin-bottom: 20px; }
+    .hero h1 em { font-style: normal; border-bottom: 2px solid var(--color-text); }
+    .hero-sub { font-size: 16px; color: var(--color-text2); line-height: 1.9; margin-bottom: 16px; }
+    .prereg-box { background: var(--color-bg2); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 20px 22px; font-size: 15px; color: var(--color-text2); margin-bottom: 28px; line-height: 1.85; text-align: left; }
+    .prereg-box strong { color: var(--color-text); font-weight: 500; display: block; margin-bottom: 6px; font-size: 16px; }
+    .trial-note { font-size: 12px; color: var(--color-text3); margin-top: 12px; display: block; line-height: 1.7; }
+    .cta-btn { display: inline-block; background: #06C755; color: #ffffff; font-family: var(--font-sans); font-size: 17px; font-weight: 500; padding: 18px 40px; border-radius: var(--radius-md); text-decoration: none; letter-spacing: 0.04em; border: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .cta-btn:active { opacity: 0.85; }
     .cta-btn-full { display: block; text-align: center; }
+    .cta-sub { font-size: 13px; color: var(--color-text3); margin-top: 10px; }
+    .limited { margin-top: 6px; font-size: 14px; color: var(--color-text3); }
 
-    .cta-sub {
-      font-size: 13px;
-      color: var(--color-text3);
-      margin-top: 10px;
-    }
+    section { padding: 48px 0; border-bottom: 1px solid var(--color-border); }
+    .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; color: var(--color-text3); text-transform: uppercase; margin-bottom: 16px; }
+    .section-title { font-family: var(--font-serif); font-size: clamp(20px, 5vw, 24px); font-weight: 400; line-height: 1.6; margin-bottom: 16px; }
+    .section-body { font-size: 16px; color: var(--color-text2); line-height: 1.9; }
 
-    .limited {
-      margin-top: 6px;
-      font-size: 14px;
-      color: var(--color-text3);
-    }
-
-    /* ── SECTIONS ── */
-    section {
-      padding: 48px 0;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .section-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.16em;
-      color: var(--color-text3);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .section-title {
-      font-family: var(--font-serif);
-      font-size: clamp(20px, 5vw, 24px);
-      font-weight: 400;
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    .section-body {
-      font-size: 16px;
-      color: var(--color-text2);
-      line-height: 1.9;
-    }
-
-    /* ── PAIN LIST ── */
     .pain-list { list-style: none; margin: 24px 0; }
-
-    .pain-list li {
-      font-size: 16px;
-      color: var(--color-text2);
-      padding: 14px 0;
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      line-height: 1.7;
-    }
-
+    .pain-list li { font-size: 16px; color: var(--color-text2); padding: 14px 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: flex-start; gap: 12px; line-height: 1.7; }
     .pain-list li:last-child { border-bottom: none; }
+    .pain-mark { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--color-bg2); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--color-text3); margin-top: 2px; }
 
-    .pain-mark {
-      flex-shrink: 0;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--color-bg2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: var(--color-text3);
-      margin-top: 2px;
-    }
-
-    /* ── OUTCOME ── */
-    .outcome-card {
-      border: 1px solid var(--color-border2);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      margin: 24px 0;
-    }
-
-    .outcome-num {
-      font-family: var(--font-serif);
-      font-size: 56px;
-      font-weight: 300;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .outcome-unit {
-      font-size: 16px;
-      color: var(--color-text2);
-      margin-bottom: 20px;
-    }
-
+    .outcome-card { border: 1px solid var(--color-border2); border-radius: var(--radius-lg); padding: 24px; margin: 24px 0; }
+    .outcome-num { font-family: var(--font-serif); font-size: 56px; font-weight: 300; line-height: 1; margin-bottom: 6px; }
+    .outcome-unit { font-size: 16px; color: var(--color-text2); margin-bottom: 20px; }
     .outcome-list { list-style: none; }
-
-    .outcome-list li {
-      font-size: 15px;
-      color: var(--color-text2);
-      padding: 10px 0;
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      gap: 10px;
-      line-height: 1.7;
-    }
-
+    .outcome-list li { font-size: 15px; color: var(--color-text2); padding: 10px 0; border-bottom: 1px solid var(--color-border); display: flex; gap: 10px; line-height: 1.7; }
     .outcome-list li:last-child { border-bottom: none; }
 
-    /* ── PROFILE ── */
-    .profile-card {
-      background: var(--color-bg);
-      border: 1px solid var(--color-border2);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      margin: 24px 0;
-    }
+    .profile-card { background: var(--color-bg); border: 1px solid var(--color-border2); border-radius: var(--radius-lg); padding: 24px; margin: 24px 0; }
+    .profile-top { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
+    .profile-avatar { flex-shrink: 0; width: 80px; height: 80px; border-radius: 50%; background: var(--color-bg2); border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--color-text3); text-align: center; line-height: 1.5; }
+    .profile-name { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+    .profile-sub { font-size: 13px; color: var(--color-text3); margin-bottom: 12px; }
+    .profile-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .profile-tag { font-size: 12px; padding: 4px 12px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text2); border: 1px solid var(--color-border); }
+    .profile-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+    .stat-item { background: var(--color-bg2); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; }
+    .stat-num { font-family: var(--font-serif); font-size: 24px; font-weight: 300; line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: 12px; color: var(--color-text3); line-height: 1.4; }
+    .profile-bio { font-size: 15px; color: var(--color-text2); line-height: 1.9; padding-top: 20px; border-top: 1px solid var(--color-border); }
+    .profile-quote { margin-top: 16px; padding: 14px 16px; border-left: 3px solid var(--color-border2); }
+    .profile-quote p { font-size: 15px; color: var(--color-text2); line-height: 1.9; font-style: italic; }
 
-    .profile-top {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      margin-bottom: 20px;
-    }
-
-    .profile-avatar {
-      flex-shrink: 0;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: var(--color-bg2);
-      border: 1px solid var(--color-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      color: var(--color-text3);
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    .profile-name {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-
-    .profile-sub {
-      font-size: 13px;
-      color: var(--color-text3);
-      margin-bottom: 12px;
-    }
-
-    .profile-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .profile-tag {
-      font-size: 12px;
-      padding: 4px 12px;
-      border-radius: 100px;
-      background: var(--color-bg2);
-      color: var(--color-text2);
-      border: 1px solid var(--color-border);
-    }
-
-    .profile-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 20px 0;
-    }
-
-    .stat-item {
-      background: var(--color-bg2);
-      border-radius: var(--radius-sm);
-      padding: 14px 10px;
-      text-align: center;
-    }
-
-    .stat-num {
-      font-family: var(--font-serif);
-      font-size: 24px;
-      font-weight: 300;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: var(--color-text3);
-      line-height: 1.4;
-    }
-
-    .profile-bio {
-      font-size: 15px;
-      color: var(--color-text2);
-      line-height: 1.9;
-      padding-top: 20px;
-      border-top: 1px solid var(--color-border);
-    }
-
-    .profile-quote {
-      margin-top: 16px;
-      padding: 14px 16px;
-      border-left: 3px solid var(--color-border2);
-    }
-
-    .profile-quote p {
-      font-size: 15px;
-      color: var(--color-text2);
-      line-height: 1.9;
-      font-style: italic;
-    }
-
-    /* ── VOICE PLACEHOLDER ── */
-    .voice-placeholder {
-      border: 1px dashed var(--color-border2);
-      border-radius: var(--radius-lg);
-      padding: 36px 24px;
-      text-align: center;
-      margin: 24px 0;
-    }
-
-    .voice-placeholder-label {
-      font-size: 11px;
-      color: var(--color-text3);
-      letter-spacing: 0.12em;
-      margin-bottom: 8px;
-    }
-
-    .voice-placeholder-text {
-      font-size: 15px;
-      color: var(--color-text3);
-      line-height: 1.8;
-    }
-
-    /* ── FLOW STEPS ── */
     .flow-steps { margin: 24px 0; }
-
-    .flow-step {
-      display: flex;
-      gap: 18px;
-      align-items: flex-start;
-      padding: 18px 0;
-      border-bottom: 1px solid var(--color-border);
-    }
-
+    .flow-step { display: flex; gap: 18px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--color-border); }
     .flow-step:last-child { border-bottom: none; }
+    .step-num { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--color-border2); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--color-text2); margin-top: 2px; }
+    .step-tag { display: inline-block; font-size: 12px; padding: 3px 10px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text3); border: 1px solid var(--color-border); margin-bottom: 6px; }
+    .step-title { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
+    .step-desc { font-size: 15px; color: var(--color-text2); line-height: 1.8; }
+    .ai-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--color-text2); background: var(--color-bg2); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 8px 14px; margin-top: 10px; }
+    .ai-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-text3); flex-shrink: 0; }
 
-    .step-num {
-      flex-shrink: 0;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1px solid var(--color-border2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--color-text2);
-      margin-top: 2px;
-    }
+    .research-box { background: var(--color-bg2); border-radius: var(--radius-lg); padding: 24px; margin: 24px 0; }
+    .research-list { list-style: none; }
+    .research-list li { font-size: 14px; color: var(--color-text2); padding: 10px 0; border-bottom: 1px solid var(--color-border); line-height: 1.75; }
+    .research-list li:last-child { border-bottom: none; }
+    .research-list li strong { color: var(--color-text); font-weight: 500; display: block; margin-bottom: 2px; }
 
-    .step-tag {
-      display: inline-block;
-      font-size: 12px;
-      padding: 3px 10px;
-      border-radius: 100px;
-      background: var(--color-bg2);
-      color: var(--color-text3);
-      border: 1px solid var(--color-border);
-      margin-bottom: 6px;
-      letter-spacing: 0.04em;
-    }
+    .grammar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 24px 0; }
+    .grammar-item { background: var(--color-bg2); border-radius: var(--radius-sm); padding: 14px 12px; }
+    .grammar-week { font-size: 11px; color: var(--color-text3); margin-bottom: 5px; font-weight: 500; letter-spacing: 0.06em; }
+    .grammar-name { font-size: 15px; font-weight: 500; }
 
-    .step-title {
-      font-size: 16px;
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
+    .voice-placeholder { border: 1px dashed var(--color-border2); border-radius: var(--radius-lg); padding: 36px 24px; text-align: center; margin: 24px 0; }
+    .voice-placeholder-label { font-size: 11px; color: var(--color-text3); letter-spacing: 0.12em; margin-bottom: 8px; }
+    .voice-placeholder-text { font-size: 15px; color: var(--color-text3); line-height: 1.8; }
 
-    .step-desc {
-      font-size: 15px;
-      color: var(--color-text2);
-      line-height: 1.8;
-    }
+    /* 保証カード */
+    .guarantee-card { border: 1px solid var(--color-border2); border-radius: var(--radius-lg); padding: 28px 24px; margin: 24px 0; }
+    .guarantee-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .guarantee-icon { flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%; background: var(--color-bg2); border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; }
+    .guarantee-title { font-family: var(--font-serif); font-size: 19px; font-weight: 400; line-height: 1.4; }
+    .guarantee-body { font-size: 15px; color: var(--color-text2); line-height: 1.9; margin-bottom: 16px; }
+    .guarantee-conditions { list-style: none; background: var(--color-bg2); border-radius: var(--radius-sm); padding: 16px 20px; }
+    .guarantee-conditions li { font-size: 14px; color: var(--color-text2); padding: 6px 0; border-bottom: 1px solid var(--color-border); display: flex; gap: 10px; line-height: 1.7; }
+    .guarantee-conditions li:last-child { border-bottom: none; }
+    .guarantee-note { font-size: 13px; color: var(--color-text3); margin-top: 12px; line-height: 1.7; }
 
-    .ai-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 13px;
-      color: var(--color-text2);
-      background: var(--color-bg2);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      padding: 8px 14px;
-      margin-top: 10px;
-    }
+    /* 年末訴求バナー */
+    .yearend-banner { background: var(--color-text); color: var(--color-bg); border-radius: var(--radius-lg); padding: 28px 24px; text-align: center; margin: 0 0 0; }
+    .yearend-banner .label { font-size: 12px; letter-spacing: 0.12em; opacity: 0.6; margin-bottom: 10px; }
+    .yearend-banner h2 { font-family: var(--font-serif); font-size: clamp(20px, 5vw, 26px); font-weight: 400; line-height: 1.6; margin-bottom: 14px; }
+    .yearend-banner p { font-size: 15px; opacity: 0.75; line-height: 1.85; margin-bottom: 24px; }
+    .yearend-banner .cta-btn { background: #06C755; color: #ffffff; }
+    .yearend-note { font-size: 12px; opacity: 0.55; margin-top: 10px; }
 
-    .ai-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--color-text3);
-      flex-shrink: 0;
-    }
+    .value-question { background: var(--color-bg2); border-left: 3px solid var(--color-border2); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 24px; margin: 0 0 32px; }
+    .value-question p { font-family: var(--font-serif); font-size: 17px; color: var(--color-text); line-height: 1.9; font-weight: 400; }
 
-    /* ── GRAMMAR ── */
-    .grammar-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 24px 0;
-    }
-
-    .grammar-item {
-      background: var(--color-bg2);
-      border-radius: var(--radius-sm);
-      padding: 14px 12px;
-    }
-
-    .grammar-week {
-      font-size: 11px;
-      color: var(--color-text3);
-      margin-bottom: 5px;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-    }
-
-    .grammar-name {
-      font-size: 15px;
-      font-weight: 500;
-    }
-
-    /* ── PRICE ── */
-    .price-card {
-      background: var(--color-bg);
-      border: 1px solid var(--color-border2);
-      border-radius: var(--radius-lg);
-      padding: 28px 24px;
-      margin: 24px 0;
-    }
-
-    .price-monitor-label {
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      color: var(--color-text3);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .price-compare {
-      display: flex;
-      align-items: baseline;
-      gap: 14px;
-      margin-bottom: 6px;
-      flex-wrap: wrap;
-    }
-
-    .price-original {
-      font-family: var(--font-serif);
-      font-size: 22px;
-      font-weight: 300;
-      color: var(--color-text3);
-      text-decoration: line-through;
-    }
-
-    .price-main {
-      font-family: var(--font-serif);
-      font-size: 44px;
-      font-weight: 300;
-    }
-
-    .price-off {
-      font-size: 14px;
-      font-weight: 500;
-      padding: 4px 14px;
-      border-radius: 100px;
-      background: var(--color-bg2);
-      color: var(--color-text2);
-      border: 1px solid var(--color-border);
-    }
-
-    .price-payment {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .payment-option {
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      padding: 16px;
-    }
-
-    .payment-label {
-      font-size: 11px;
-      color: var(--color-text3);
-      letter-spacing: 0.08em;
-      margin-bottom: 6px;
-    }
-
-    .payment-amount {
-      font-size: 17px;
-      font-weight: 500;
-    }
-
-    .payment-note {
-      font-size: 12px;
-      color: var(--color-text3);
-      margin-top: 4px;
-    }
-
-    /* ── VALUE COMPARE ── */
-    .value-compare {
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-
+    .price-card { background: var(--color-bg); border: 1px solid var(--color-border2); border-radius: var(--radius-lg); padding: 28px 24px; margin: 0; }
+    .price-service-name { font-family: var(--font-serif); font-size: 14px; color: var(--color-text3); letter-spacing: 0.08em; margin-bottom: 6px; }
+    .price-monitor-label { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; color: var(--color-text3); text-transform: uppercase; margin-bottom: 10px; }
+    .price-compare { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; flex-wrap: wrap; }
+    .price-original { font-family: var(--font-serif); font-size: 22px; font-weight: 300; color: var(--color-text3); text-decoration: line-through; }
+    .price-main { font-family: var(--font-serif); font-size: 44px; font-weight: 300; }
+    .price-off { font-size: 14px; font-weight: 500; padding: 4px 14px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text2); border: 1px solid var(--color-border); }
+    .price-payment { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .payment-option { border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 16px; }
+    .payment-label { font-size: 11px; color: var(--color-text3); letter-spacing: 0.08em; margin-bottom: 6px; }
+    .payment-amount { font-size: 17px; font-weight: 500; }
+    .payment-note { font-size: 12px; color: var(--color-text3); margin-top: 4px; }
+    .value-compare { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 24px; }
     .vc-row { display: grid; grid-template-columns: 1fr 1fr 1fr; }
     .vc-header { background: var(--color-bg2); }
-
-    .vc-cell {
-      padding: 13px 14px;
-      border-bottom: 1px solid var(--color-border);
-      border-right: 1px solid var(--color-border);
-      color: var(--color-text2);
-      line-height: 1.5;
-      font-size: 14px;
-    }
-
+    .vc-cell { padding: 13px 14px; border-bottom: 1px solid var(--color-border); border-right: 1px solid var(--color-border); color: var(--color-text2); line-height: 1.5; font-size: 14px; }
     .vc-cell:last-child { border-right: none; }
     .vc-row:last-child .vc-cell { border-bottom: none; }
     .vc-cell.highlight { color: var(--color-text); font-weight: 500; }
     .vc-cell.label { color: var(--color-text3); font-size: 13px; }
-
-    /* ── PRICE INCLUDES ── */
     .price-includes { list-style: none; margin-bottom: 24px; }
-
-    .price-includes li {
-      font-size: 15px;
-      color: var(--color-text2);
-      padding: 12px 0;
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      line-height: 1.7;
-    }
-
+    .price-includes li { font-size: 15px; color: var(--color-text2); padding: 12px 0; border-bottom: 1px solid var(--color-border); display: flex; gap: 12px; align-items: flex-start; line-height: 1.7; }
     .price-includes li:last-child { border-bottom: none; }
-
-    .check {
-      flex-shrink: 0;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--color-text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 2px;
-    }
-
-    .li-note {
-      font-size: 13px;
-      color: var(--color-text3);
-      display: block;
-      margin-top: 3px;
-    }
-
-    .seats-bar {
-      margin: 24px 0;
-      padding: 16px 20px;
-      background: var(--color-bg2);
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .seats-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #06C755;
-      flex-shrink: 0;
-      animation: pulse 2s infinite;
-    }
-
+    .check { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--color-text); display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+    .li-note { font-size: 13px; color: var(--color-text3); display: block; margin-top: 3px; }
+    .seats-bar { margin: 24px 0; padding: 16px 20px; background: var(--color-bg2); border-radius: var(--radius-sm); display: flex; align-items: center; gap: 14px; }
+    .seats-dot { width: 10px; height: 10px; border-radius: 50%; background: #06C755; flex-shrink: 0; animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
-
     .seats-text { font-size: 15px; color: var(--color-text2); }
     .seats-text strong { font-weight: 500; color: var(--color-text); }
+    .limited-reason { font-size: 13px; color: var(--color-text3); margin-top: 14px; line-height: 1.8; text-align: center; }
 
-    .limited-reason {
-      font-size: 13px;
-      color: var(--color-text3);
-      margin-top: 14px;
-      line-height: 1.8;
-      text-align: center;
-    }
-
-    /* ── FAQ ── */
     .faq-list { margin: 24px 0; }
-
-    .faq-item {
-      padding: 18px 0;
-      border-bottom: 1px solid var(--color-border);
-    }
-
+    .faq-item { padding: 18px 0; border-bottom: 1px solid var(--color-border); }
     .faq-item:last-child { border-bottom: none; }
-
-    .faq-q {
-      font-size: 16px;
-      font-weight: 500;
-      margin-bottom: 0;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      line-height: 1.6;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .toggle {
-      flex-shrink: 0;
-      font-size: 24px;
-      color: var(--color-text3);
-      font-weight: 300;
-      line-height: 1;
-      margin-top: 0;
-      transition: transform 0.2s;
-    }
-
-    .faq-a {
-      font-size: 15px;
-      color: var(--color-text2);
-      line-height: 1.9;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.2s;
-    }
-
-    .faq-item.open .faq-a {
-      max-height: 300px;
-      padding-top: 12px;
-    }
-
+    .faq-q { font-size: 16px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; line-height: 1.6; -webkit-tap-highlight-color: transparent; }
+    .toggle { flex-shrink: 0; font-size: 24px; color: var(--color-text3); font-weight: 300; line-height: 1; transition: transform 0.2s; }
+    .faq-a { font-size: 15px; color: var(--color-text2); line-height: 1.9; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.2s; }
+    .faq-item.open .faq-a { max-height: 320px; padding-top: 12px; }
     .faq-item.open .toggle { transform: rotate(45deg); }
 
-    /* ── FOOTER ── */
-    .footer {
-      padding: 56px 0 48px;
-      text-align: center;
-    }
+    .footer { padding: 56px 0 48px; text-align: center; }
+    .footer-title { font-family: var(--font-serif); font-size: 22px; font-weight: 400; margin-bottom: 16px; line-height: 1.6; }
+    .footer-note { font-size: 15px; color: var(--color-text2); margin-bottom: 28px; line-height: 1.9; }
 
-    .footer-title {
-      font-family: var(--font-serif);
-      font-size: 22px;
-      font-weight: 400;
-      margin-bottom: 16px;
-      line-height: 1.6;
-    }
-
-    .footer-note {
-      font-size: 15px;
-      color: var(--color-text2);
-      margin-bottom: 28px;
-      line-height: 1.9;
-    }
-
-    /* ── RESPONSIVE ── */
     @media (max-width: 400px) {
-      .profile-stats { grid-template-columns: repeat(3, 1fr); }
       .grammar-grid { grid-template-columns: repeat(2, 1fr); }
       .price-payment { grid-template-columns: 1fr; }
-      .vc-cell { padding: 10px 10px; font-size: 12px; }
+      .vc-cell { padding: 10px; font-size: 12px; }
       .vc-cell.label { font-size: 11px; }
     }
   </style>
@@ -730,52 +178,34 @@
 <body>
   <div class="wrap">
 
-    <!-- HERO -->
     <div class="hero">
       <div class="badge">2026年10月5日 開講 — モニター5名限定</div>
+      <div class="service-name">韓国語アウトプットジム</div>
       <div class="hero-ko">말할 수 있는 당신이 된다</div>
-      <h1>文法は知っている。<br>でも、<em>話せない</em>。<br>その壁を、12週間で越える。</h1>
+      <h1>「勉強してるのに<br>話せない」が、<br><em>12週間で変わる。</em></h1>
       <p class="hero-sub">アウトプットだけに特化した韓国語スクール。<br>「知っている」状態から「話せる」状態へ。</p>
       <div class="prereg-box">
         <strong>LINE登録で「瞬間韓作文3日間体験」を無料プレゼント</strong>
-        1日1文、音声を送るだけ。AIがフィードバックを自動でお届けします。<br>ぜひ10月の開講にご参加ください。
-        <span class="trial-note">※体験版はAI添削のみの簡易版です。正式コースでは日記・ネイティブレッスン・コーチ面談・専用オンライン学習スペースでのやりとりが加わります。</span>
+        1日1文、音声を送るだけ。AIがフィードバックを自動でお届けします。
+        <span class="trial-note">※体験版はAI添削のみの簡易版です。正式コースでは瞬間韓作文5文・1文日記・ネイティブレッスン・コーチ面談・専用オンライン学習スペースでのやりとりがあります。</span>
       </div>
       <a href="https://lin.ee/50VcRen" class="cta-btn" target="_blank">LINEで無料体験を受け取る ↗</a>
       <p class="cta-sub">登録後、すぐに1日目の課題が届きます</p>
       <p class="limited">モニター残り5席 · 正式開講 2026年10月5日</p>
     </div>
 
-    <!-- こんな方へ -->
     <section>
       <div class="section-label">こんな方へ</div>
       <div class="section-title">「勉強してきたのに、<br>なぜか話せない」</div>
       <ul class="pain-list">
-        <li><span class="pain-mark">✕</span>テキストで文法は覚えたのに、会話になると頭が真っ白になる</li>
-        <li><span class="pain-mark">✕</span>「안녕하세요」の後が続かない</li>
+        <li><span class="pain-mark">✕</span>テキストで文法は覚えたのに、いざ話そうとすると言葉が即座に出てこない</li>
+        <li><span class="pain-mark">✕</span>「안녕하세요」は言えても、その後が続かない</li>
         <li><span class="pain-mark">✕</span>韓国旅行や推し活で、もっと話せるようになりたい</li>
         <li><span class="pain-mark">✕</span>独学では続かない。でも長期スクールは高すぎる</li>
       </ul>
-      <p class="section-body">原因は、インプットが足りないのではなく、<strong>アウトプットが足りないこと</strong>です。このスクールは、話すための練習だけに集中します。</p>
+      <p class="section-body">原因は、インプットが足りないのではなく、<strong>アウトプットが足りないこと</strong>です。韓国語アウトプットジムは、話すための練習だけに集中します。</p>
     </section>
 
-    <!-- 成果 -->
-    <section>
-      <div class="section-label">12週間後の成果</div>
-      <div class="outcome-card">
-        <div class="outcome-num">5分</div>
-        <div class="outcome-unit">詰まりながらでも、会話が続く</div>
-        <ul class="outcome-list">
-          <li><span>—</span>自己紹介・近況・予定を自然に話せる</li>
-          <li><span>—</span>過去の経験や旅行のことを伝えられる</li>
-          <li><span>—</span>質問に対してとっさに答えが出てくる</li>
-          <li><span>—</span>完璧じゃなくても、やり取りが続く感覚がつかめる</li>
-        </ul>
-      </div>
-      <p class="section-body">「完璧に話せる」ではなく、<strong>「会話が途切れない」</strong>状態を目指します。</p>
-    </section>
-
-    <!-- 講師 -->
     <section>
       <div class="section-label">講師について</div>
       <div class="section-title">「教えるプロ」が<br>設計したコースです。</div>
@@ -793,12 +223,12 @@
           </div>
         </div>
         <div class="profile-stats">
-          <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">指導人数</div></div>
+          <div class="stat-item"><div class="stat-num">300+</div><div class="stat-label">指導人数</div></div>
           <div class="stat-item"><div class="stat-num">99.5%</div><div class="stat-label">大学受験合格率</div></div>
           <div class="stat-item"><div class="stat-num">5年</div><div class="stat-label">韓国での指導経験</div></div>
         </div>
         <div class="profile-bio">
-          韓国在住中、教育機関・企業を問わず日本語教師として200名以上を指導。日本の大学への留学受験専門クラスでは合格率99.5%を達成。芸能事務所や航空会社での翻訳実績も持つ。韓国語は10歳のときにドラマで自然に身につけた。
+          韓国在住中、教育機関・企業を問わず日本語教師として300名以上を指導。日本の大学への留学受験専門クラスでは合格率99.5%を達成。芸能事務所や航空会社での翻訳実績も持つ。韓国語は10歳のときにドラマで自然に身につけた。
           <div class="profile-quote">
             <p>「99.5%」と書くと聞こえがいいですが、1名だけ、志望校に行かせてあげられなかった経験があります。その悔しさが、今も「一人ひとりに向き合う」という姿勢の原点になっています。</p>
           </div>
@@ -806,17 +236,6 @@
       </div>
     </section>
 
-    <!-- 受講生の声 -->
-    <section>
-      <div class="section-label">受講生の声</div>
-      <div class="section-title">受講後の変化</div>
-      <div class="voice-placeholder">
-        <div class="voice-placeholder-label">COMING SOON</div>
-        <div class="voice-placeholder-text">モニター受講生の声・成果を<br>2026年10月以降に掲載予定です。</div>
-      </div>
-    </section>
-
-    <!-- 設計思想 -->
     <section>
       <div class="section-label">設計思想</div>
       <div class="section-title">「型 → 自動化 → 実戦」<br>の3ステップで反復する</div>
@@ -858,7 +277,20 @@
       </div>
     </section>
 
-    <!-- カリキュラム -->
+    <section>
+      <div class="section-label">カリキュラムの根拠</div>
+      <div class="section-title">外国語習得研究を<br>ベースに設計しています。</div>
+      <p class="section-body" style="margin-bottom: 20px;">このカリキュラムは、語学習得に関する4つの研究理論をもとに設計されています。</p>
+      <div class="research-box">
+        <ul class="research-list">
+          <li><strong>タスクベース言語教育（TBLT）</strong>実際のコミュニケーション場面を想定したタスクを通じて言語を習得する。瞬間韓作文・日記・レッスンはすべてこの考え方に基づいています。</li>
+          <li><strong>アウトプット仮説（Merrill Swain）</strong>言語は「話す・書く」アウトプットの練習を通じてはじめて定着する。インプットだけでは話せるようにならないことを示した研究です。</li>
+          <li><strong>スキル習得理論（John R. Anderson）</strong>繰り返し練習によって意識的な知識が自動化される。同じ文法を5日間反復するのはこの理論に基づいています。</li>
+          <li><strong>インタラクション仮説（Michael Long）</strong>実際のやり取りの中でことばが定着する。週1回のネイティブレッスンで「実戦」を積む設計の根拠です。</li>
+        </ul>
+      </div>
+    </section>
+
     <section>
       <div class="section-label">カリキュラム</div>
       <div class="section-title">12週間 × 12のコア文法</div>
@@ -879,10 +311,59 @@
       </div>
     </section>
 
-    <!-- 料金 -->
+    <section>
+      <div class="section-label">12週間後の成果</div>
+      <div class="outcome-card">
+        <div class="outcome-num">5分</div>
+        <div class="outcome-unit">詰まりながらでも、会話が続く</div>
+        <ul class="outcome-list">
+          <li><span>—</span>自己紹介・近況・予定を自然に話せる</li>
+          <li><span>—</span>過去の経験や旅行のことを伝えられる</li>
+          <li><span>—</span>質問に対してとっさに答えが出てくる</li>
+          <li><span>—</span>完璧じゃなくても、やり取りが続く感覚がつかめる</li>
+        </ul>
+      </div>
+      <p class="section-body">「完璧に話せる」ではなく、<strong>「会話が途切れない」</strong>状態を目指します。</p>
+    </section>
+
+    <section>
+      <div class="section-label">受講生の声</div>
+      <div class="section-title">受講後の変化</div>
+      <div class="voice-placeholder">
+        <div class="voice-placeholder-label">COMING SOON</div>
+        <div class="voice-placeholder-text">モニター受講生の声・成果を<br>2026年10月以降に掲載予定です。</div>
+      </div>
+    </section>
+
+    <!-- 保証 -->
+    <section>
+      <div class="section-label">安心保証</div>
+      <div class="section-title">やり切ったのに<br>効果を感じられなければ、<br>4週間無料延長します。</div>
+      <div class="guarantee-card">
+        <div class="guarantee-header">
+          <div class="guarantee-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" stroke="var(--color-text2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="var(--color-text2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="guarantee-title">4週間無料延長保証</div>
+        </div>
+        <div class="guarantee-body">12週間すべての課題・レッスン・コーチ面談に参加したにもかかわらず、効果を感じられなかった場合、追加料金なしで4週間延長します。</div>
+        <ul class="guarantee-conditions">
+          <li><span>—</span>12週間の瞬間韓作文・1文日記をすべて提出していること</li>
+          <li><span>—</span>ネイティブレッスン12回すべてに参加していること</li>
+          <li><span>—</span>コーチ面談をすべて受けていること</li>
+          <li><span>—</span>12週間修了後、ご自身で「効果を感じられなかった」と申告していること</li>
+        </ul>
+        <p class="guarantee-note">全力でやり切ってくれた方を、全力でサポートします。条件を満たした上での申告であれば、理由を問わず対応します。</p>
+      </div>
+    </section>
+
     <section>
       <div class="section-label">料金</div>
+      <div class="value-question">
+        <p>12週間後、韓国語で話せている自分を想像してください。旅行で現地の人と会話できる、推しのライブで言葉がわかる。その体験の価値と比べたとき、59,400円はどう見えますか？</p>
+      </div>
       <div class="price-card">
+        <div class="price-service-name">韓国語アウトプットジム</div>
         <div class="price-monitor-label">モニター特別価格</div>
         <div class="price-compare">
           <span class="price-original">¥98,000</span>
@@ -920,7 +401,7 @@
           <div class="vc-row">
             <div class="vc-cell label">個別フィードバック</div>
             <div class="vc-cell">週1レッスンのみ</div>
-            <div class="vc-cell highlight">毎日</div>
+            <div class="vc-cell highlight">週6〜7回</div>
           </div>
         </div>
         <ul class="price-includes">
@@ -944,6 +425,10 @@
             <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span>専用オンライン学習スペースへのアクセス<span class="li-note">課題の提出・フィードバックの受け取りはすべてここで完結</span></span>
           </li>
+          <li>
+            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>4週間無料延長保証<span class="li-note">条件を満たした上でご自身が効果を感じられなかった場合</span></span>
+          </li>
         </ul>
         <div class="seats-bar">
           <div class="seats-dot"></div>
@@ -955,7 +440,6 @@
       </div>
     </section>
 
-    <!-- FAQ -->
     <section>
       <div class="section-label">よくある質問</div>
       <div class="faq-list">
@@ -976,12 +460,16 @@
           <div class="faq-a">瞬間韓作文・1文日記どちらも、専用オンライン学習スペース上でAI添削とコーチチェックのフィードバックをお届けします。ネイティブレッスン後も詳細なフィードバックをお渡しします。</div>
         </div>
         <div class="faq-item">
+          <div class="faq-q"><span>4週間無料延長保証の詳細を教えてください。</span><span class="toggle">+</span></div>
+          <div class="faq-a">12週間の全課題・全レッスン・全コーチ面談に参加したにもかかわらず、ご自身で「効果を感じられなかった」と申告された場合、追加料金なしで4週間延長します。条件を満たしていれば理由を問わず対応します。</div>
+        </div>
+        <div class="faq-item">
           <div class="faq-q"><span>モニターとは何ですか？</span><span class="toggle">+</span></div>
           <div class="faq-a">第1期は正規価格（¥98,000）から40%OFFのモニター特別価格でご参加いただけます。お願いしたいことは2点あります。ひとつは、学習の成果や感想をご自身のSNSでシェアいただけると助かります（任意・強制ではありません）。もうひとつは、コーチのSNSでモニターの成果を紹介させていただく場合があります。その際は必ず事前にご本人へ確認・許可をいただいた上で掲載します。</div>
         </div>
         <div class="faq-item">
           <div class="faq-q"><span>無料体験と正式コースは何が違いますか？</span><span class="toggle">+</span></div>
-          <div class="faq-a">LINE上の無料体験は瞬間韓作文1文のAI添削のみの簡易版です。正式コースでは専用オンライン学習スペース上での課題管理・瞬間韓作文5文・1文日記・ネイティブレッスン・コーチ面談が加わり、12週間を通じてコーチが伴走します。</div>
+          <div class="faq-a">LINE上の無料体験は瞬間韓作文1文のAI添削のみの簡易版です。正式コースでは瞬間韓作文5文・1文日記・ネイティブレッスン・コーチ面談が加わり、専用オンライン学習スペースで12週間コーチが伴走します。</div>
         </div>
         <div class="faq-item">
           <div class="faq-q"><span>60代でもついていけますか？</span><span class="toggle">+</span></div>
@@ -990,15 +478,24 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- 年末訴求バナー -->
+    <section style="border-bottom: none; padding-bottom: 0;">
+      <div class="yearend-banner">
+        <div class="label">10月5日スタート · 12週間コース</div>
+        <h2>今年こそ、<br>話せる自分で<br>年を越す。</h2>
+        <p>10月5日にスタートすると、ちょうど12月末に修了します。<br>「今年こそ韓国語を話せるようになりたい」と思っているなら、今が始め時です。</p>
+        <a href="https://lin.ee/50VcRen" class="cta-btn" target="_blank">LINEで無料体験を受け取る ↗</a>
+        <p class="yearend-note">モニター残り5席 · 先着順</p>
+      </div>
+    </section>
+
     <div class="footer">
       <div class="footer-title">まず、無料で体験してみてください。</div>
-      <p class="footer-note">3日間の体験を経て、<br>ぜひ10月の開講にご参加ください。</p>
+      <p class="footer-note">3日間の体験を経て、<br>10月の開講でお待ちしています。</p>
       <a href="https://lin.ee/50VcRen" class="cta-btn" target="_blank">LINEで無料体験を受け取る ↗</a>
     </div>
 
   </div>
-
   <script>
     document.querySelectorAll('.faq-q').forEach(q => {
       q.addEventListener('click', () => {
