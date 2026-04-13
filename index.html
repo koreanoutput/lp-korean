@@ -29,26 +29,24 @@
 
     /* HERO */
     .hero { padding: 48px 0 44px; text-align: center; border-bottom: 1px solid var(--color-border); }
-    .badge { display: inline-block; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; padding: 6px 18px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text2); border: 1px solid var(--color-border); margin-bottom: 28px; }
-    .service-name { font-family: var(--font-serif); font-size: 12px; color: var(--color-text3); letter-spacing: 0.12em; margin-bottom: 20px; }
+    .badge { display: inline-block; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; padding: 6px 18px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text2); border: 1px solid var(--color-border); margin-bottom: 24px; }
+    .service-name { font-family: var(--font-serif); font-size: 12px; color: var(--color-text3); letter-spacing: 0.12em; margin-bottom: 16px; }
 
-    /* キャッチコピー：改行を制御して自然に1〜2行に収める */
     .hero h1 {
       font-family: var(--font-serif);
-      font-size: clamp(26px, 7vw, 36px);
       font-weight: 400;
       line-height: 1.55;
       letter-spacing: 0.02em;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      /* 文字サイズを小さめに固定して折り返しを制御 */
+      font-size: 22px;
     }
-    .hero h1 .line1 { display: block; }
-    .hero h1 .line2 { display: block; }
     .hero h1 em { font-style: normal; border-bottom: 2px solid var(--color-text); padding-bottom: 1px; }
 
     .hero-ko { font-family: var(--font-serif); font-size: 13px; color: var(--color-text3); letter-spacing: 0.14em; margin-bottom: 20px; }
     .hero-sub { font-size: 15px; color: var(--color-text2); line-height: 1.9; margin-bottom: 20px; }
 
-    .prereg-box { background: var(--color-bg2); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 20px 20px; font-size: 15px; color: var(--color-text2); margin-bottom: 28px; line-height: 1.85; text-align: left; }
+    .prereg-box { background: var(--color-bg2); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 20px; font-size: 15px; color: var(--color-text2); margin-bottom: 28px; line-height: 1.85; text-align: left; }
     .prereg-box strong { color: var(--color-text); font-weight: 500; display: block; margin-bottom: 8px; font-size: 15px; line-height: 1.5; }
     .trial-note { font-size: 13px; color: var(--color-text3); margin-top: 12px; display: block; line-height: 1.75; }
 
@@ -59,12 +57,22 @@
     .limited { margin-top: 6px; font-size: 14px; color: var(--color-text3); }
 
     section { padding: 48px 0; border-bottom: 1px solid var(--color-border); }
-    .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; color: var(--color-text3); text-transform: uppercase; margin-bottom: 16px; }
-    .section-title { font-family: var(--font-serif); font-size: clamp(20px, 5vw, 24px); font-weight: 400; line-height: 1.6; margin-bottom: 16px; }
+    .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; color: var(--color-text3); text-transform: uppercase; margin-bottom: 14px; }
+
+    /* セクションタイトル：テキストを左寄せにして余白問題を解消 */
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.65;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
     .section-body { font-size: 16px; color: var(--color-text2); line-height: 1.9; }
 
-    .pain-list { list-style: none; margin: 24px 0; }
-    .pain-list li { font-size: 16px; color: var(--color-text2); padding: 14px 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: flex-start; gap: 12px; line-height: 1.7; }
+    .pain-list { list-style: none; margin: 20px 0; }
+    .pain-list li { font-size: 15px; color: var(--color-text2); padding: 14px 0; border-bottom: 1px solid var(--color-border); display: flex; align-items: flex-start; gap: 12px; line-height: 1.7; }
     .pain-list li:last-child { border-bottom: none; }
     .pain-mark { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--color-bg2); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--color-text3); margin-top: 2px; }
 
@@ -76,115 +84,123 @@
     .outcome-list li:last-child { border-bottom: none; }
 
     .profile-card { background: var(--color-bg); border: 1px solid var(--color-border2); border-radius: var(--radius-lg); padding: 24px; margin: 24px 0; }
-    .profile-top { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
-    .profile-avatar { flex-shrink: 0; width: 80px; height: 80px; border-radius: 50%; background: var(--color-bg2); border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--color-text3); text-align: center; line-height: 1.5; }
+    .profile-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px; }
+    .profile-avatar { flex-shrink: 0; width: 72px; height: 72px; border-radius: 50%; background: var(--color-bg2); border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--color-text3); text-align: center; line-height: 1.5; }
     .profile-name { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
-    .profile-sub { font-size: 13px; color: var(--color-text3); margin-bottom: 12px; }
+    .profile-sub { font-size: 13px; color: var(--color-text3); margin-bottom: 10px; }
     .profile-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .profile-tag { font-size: 12px; padding: 4px 12px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text2); border: 1px solid var(--color-border); }
+    .profile-tag { font-size: 12px; padding: 4px 10px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text2); border: 1px solid var(--color-border); }
     .profile-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-    .stat-item { background: var(--color-bg2); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; }
-    .stat-num { font-family: var(--font-serif); font-size: 24px; font-weight: 300; line-height: 1; margin-bottom: 6px; }
-    .stat-label { font-size: 12px; color: var(--color-text3); line-height: 1.4; }
+    .stat-item { background: var(--color-bg2); border-radius: var(--radius-sm); padding: 14px 8px; text-align: center; }
+    .stat-num { font-family: var(--font-serif); font-size: 22px; font-weight: 300; line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: 11px; color: var(--color-text3); line-height: 1.4; }
     .profile-bio { font-size: 15px; color: var(--color-text2); line-height: 1.9; padding-top: 20px; border-top: 1px solid var(--color-border); }
     .profile-quote { margin-top: 16px; padding: 14px 16px; border-left: 3px solid var(--color-border2); }
-    .profile-quote p { font-size: 15px; color: var(--color-text2); line-height: 1.9; font-style: italic; }
+    .profile-quote p { font-size: 14px; color: var(--color-text2); line-height: 1.9; font-style: italic; }
 
     .flow-steps { margin: 24px 0; }
-    .flow-step { display: flex; gap: 18px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--color-border); }
+    .flow-step { display: flex; gap: 16px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--color-border); }
     .flow-step:last-child { border-bottom: none; }
-    .step-num { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--color-border2); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--color-text2); margin-top: 2px; }
+    .step-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--color-border2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: var(--color-text2); margin-top: 2px; }
     .step-tag { display: inline-block; font-size: 12px; padding: 3px 10px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text3); border: 1px solid var(--color-border); margin-bottom: 6px; }
-    .step-title { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
-    .step-desc { font-size: 15px; color: var(--color-text2); line-height: 1.8; }
-    .ai-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--color-text2); background: var(--color-bg2); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 8px 14px; margin-top: 10px; }
-    .ai-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-text3); flex-shrink: 0; }
+    .step-title { font-size: 15px; font-weight: 500; margin-bottom: 5px; }
+    .step-desc { font-size: 14px; color: var(--color-text2); line-height: 1.8; }
+    .ai-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--color-text2); background: var(--color-bg2); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 7px 12px; margin-top: 10px; }
+    .ai-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-text3); flex-shrink: 0; }
 
-    .research-box { background: var(--color-bg2); border-radius: var(--radius-lg); padding: 24px; margin: 24px 0; }
+    .research-box { background: var(--color-bg2); border-radius: var(--radius-lg); padding: 20px; margin: 20px 0; }
     .research-list { list-style: none; }
     .research-list li { font-size: 14px; color: var(--color-text2); padding: 10px 0; border-bottom: 1px solid var(--color-border); line-height: 1.75; }
     .research-list li:last-child { border-bottom: none; }
     .research-list li strong { color: var(--color-text); font-weight: 500; display: block; margin-bottom: 2px; }
 
-    .grammar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 24px 0; }
-    .grammar-item { background: var(--color-bg2); border-radius: var(--radius-sm); padding: 14px 12px; }
-    .grammar-week { font-size: 11px; color: var(--color-text3); margin-bottom: 5px; font-weight: 500; letter-spacing: 0.06em; }
-    .grammar-name { font-size: 15px; font-weight: 500; }
+    .grammar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 20px 0; }
+    .grammar-item { background: var(--color-bg2); border-radius: var(--radius-sm); padding: 12px; }
+    .grammar-week { font-size: 10px; color: var(--color-text3); margin-bottom: 4px; font-weight: 500; letter-spacing: 0.06em; }
+    .grammar-name { font-size: 14px; font-weight: 500; }
 
     .voice-placeholder { border: 1px dashed var(--color-border2); border-radius: var(--radius-lg); padding: 36px 24px; text-align: center; margin: 24px 0; }
     .voice-placeholder-label { font-size: 11px; color: var(--color-text3); letter-spacing: 0.12em; margin-bottom: 8px; }
     .voice-placeholder-text { font-size: 15px; color: var(--color-text3); line-height: 1.8; }
 
-    .guarantee-card { border: 1px solid var(--color-border2); border-radius: var(--radius-lg); padding: 28px 24px; margin: 24px 0; }
-    .guarantee-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
-    .guarantee-icon { flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%; background: var(--color-bg2); border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; }
-    .guarantee-title { font-family: var(--font-serif); font-size: 19px; font-weight: 400; line-height: 1.4; }
+    .guarantee-card { border: 1px solid var(--color-border2); border-radius: var(--radius-lg); padding: 24px; margin: 20px 0; }
+    .guarantee-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .guarantee-icon { flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; background: var(--color-bg2); border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; }
+    .guarantee-title { font-family: var(--font-serif); font-size: 18px; font-weight: 400; line-height: 1.4; }
     .guarantee-body { font-size: 15px; color: var(--color-text2); line-height: 1.9; margin-bottom: 16px; }
-    .guarantee-conditions { list-style: none; background: var(--color-bg2); border-radius: var(--radius-sm); padding: 16px 20px; }
+    .guarantee-conditions { list-style: none; background: var(--color-bg2); border-radius: var(--radius-sm); padding: 14px 18px; }
     .guarantee-conditions li { font-size: 14px; color: var(--color-text2); padding: 6px 0; border-bottom: 1px solid var(--color-border); display: flex; gap: 10px; line-height: 1.7; }
     .guarantee-conditions li:last-child { border-bottom: none; }
     .guarantee-note { font-size: 13px; color: var(--color-text3); margin-top: 12px; line-height: 1.7; }
 
-    .value-question { background: var(--color-bg2); border-left: 3px solid var(--color-border2); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 24px; margin: 0 0 32px; }
-    .value-question p { font-family: var(--font-serif); font-size: 17px; color: var(--color-text); line-height: 1.9; font-weight: 400; }
+    .value-question { background: var(--color-bg2); border-left: 3px solid var(--color-border2); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 22px; margin: 0 0 28px; }
+    .value-question p { font-family: var(--font-serif); font-size: 16px; color: var(--color-text); line-height: 1.9; font-weight: 400; }
 
-    .price-card { background: var(--color-bg); border: 1px solid var(--color-border2); border-radius: var(--radius-lg); padding: 28px 24px; margin: 0; }
-    .price-service-name { font-family: var(--font-serif); font-size: 14px; color: var(--color-text3); letter-spacing: 0.08em; margin-bottom: 6px; }
-    .price-monitor-label { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; color: var(--color-text3); text-transform: uppercase; margin-bottom: 10px; }
-    .price-compare { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; flex-wrap: wrap; }
-    .price-original { font-family: var(--font-serif); font-size: 22px; font-weight: 300; color: var(--color-text3); text-decoration: line-through; }
-    .price-main { font-family: var(--font-serif); font-size: 44px; font-weight: 300; }
-    .price-off { font-size: 14px; font-weight: 500; padding: 4px 14px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text2); border: 1px solid var(--color-border); }
-    .price-payment { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
-    .payment-option { border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 16px; }
-    .payment-label { font-size: 11px; color: var(--color-text3); letter-spacing: 0.08em; margin-bottom: 6px; }
-    .payment-amount { font-size: 17px; font-weight: 500; }
-    .payment-note { font-size: 12px; color: var(--color-text3); margin-top: 4px; }
-    .value-compare { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 24px; }
+    .price-card { background: var(--color-bg); border: 1px solid var(--color-border2); border-radius: var(--radius-lg); padding: 24px; margin: 0; }
+    .price-service-name { font-family: var(--font-serif); font-size: 13px; color: var(--color-text3); letter-spacing: 0.08em; margin-bottom: 6px; }
+    .price-monitor-label { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; color: var(--color-text3); text-transform: uppercase; margin-bottom: 8px; }
+    .price-compare { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+    .price-original { font-family: var(--font-serif); font-size: 20px; font-weight: 300; color: var(--color-text3); text-decoration: line-through; }
+    .price-main { font-family: var(--font-serif); font-size: 40px; font-weight: 300; }
+    .price-off { font-size: 13px; font-weight: 500; padding: 4px 12px; border-radius: 100px; background: var(--color-bg2); color: var(--color-text2); border: 1px solid var(--color-border); }
+    .price-payment { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .payment-option { border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 14px; }
+    .payment-label { font-size: 11px; color: var(--color-text3); letter-spacing: 0.08em; margin-bottom: 5px; }
+    .payment-amount { font-size: 16px; font-weight: 500; }
+    .payment-note { font-size: 12px; color: var(--color-text3); margin-top: 3px; }
+    .value-compare { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 20px; }
     .vc-row { display: grid; grid-template-columns: 1fr 1fr 1fr; }
     .vc-header { background: var(--color-bg2); }
-    .vc-cell { padding: 13px 14px; border-bottom: 1px solid var(--color-border); border-right: 1px solid var(--color-border); color: var(--color-text2); line-height: 1.5; font-size: 14px; }
+    .vc-cell { padding: 11px 12px; border-bottom: 1px solid var(--color-border); border-right: 1px solid var(--color-border); color: var(--color-text2); line-height: 1.5; font-size: 13px; }
     .vc-cell:last-child { border-right: none; }
     .vc-row:last-child .vc-cell { border-bottom: none; }
     .vc-cell.highlight { color: var(--color-text); font-weight: 500; }
-    .vc-cell.label { color: var(--color-text3); font-size: 13px; }
-    .price-includes { list-style: none; margin-bottom: 24px; }
-    .price-includes li { font-size: 15px; color: var(--color-text2); padding: 12px 0; border-bottom: 1px solid var(--color-border); display: flex; gap: 12px; align-items: flex-start; line-height: 1.7; }
+    .vc-cell.label { color: var(--color-text3); font-size: 12px; }
+    .price-includes { list-style: none; margin-bottom: 20px; }
+    .price-includes li { font-size: 14px; color: var(--color-text2); padding: 10px 0; border-bottom: 1px solid var(--color-border); display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
     .price-includes li:last-child { border-bottom: none; }
-    .check { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--color-text); display: flex; align-items: center; justify-content: center; margin-top: 2px; }
-    .li-note { font-size: 13px; color: var(--color-text3); display: block; margin-top: 3px; }
-    .seats-bar { margin: 24px 0; padding: 16px 20px; background: var(--color-bg2); border-radius: var(--radius-sm); display: flex; align-items: center; gap: 14px; }
-    .seats-dot { width: 10px; height: 10px; border-radius: 50%; background: #06C755; flex-shrink: 0; animation: pulse 2s infinite; }
+    .check { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; background: var(--color-text); display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+    .li-note { font-size: 12px; color: var(--color-text3); display: block; margin-top: 3px; }
+    .seats-bar { margin: 20px 0; padding: 14px 18px; background: var(--color-bg2); border-radius: var(--radius-sm); display: flex; align-items: center; gap: 12px; }
+    .seats-dot { width: 9px; height: 9px; border-radius: 50%; background: #06C755; flex-shrink: 0; animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
-    .seats-text { font-size: 15px; color: var(--color-text2); }
+    .seats-text { font-size: 14px; color: var(--color-text2); }
     .seats-text strong { font-weight: 500; color: var(--color-text); }
-    .limited-reason { font-size: 13px; color: var(--color-text3); margin-top: 14px; line-height: 1.8; text-align: center; }
+    .limited-reason { font-size: 13px; color: var(--color-text3); margin-top: 12px; line-height: 1.8; text-align: center; }
 
-    .yearend-banner { background: var(--color-text); color: var(--color-bg); border-radius: var(--radius-lg); padding: 36px 24px; text-align: center; }
-    .yearend-banner .label { font-size: 12px; letter-spacing: 0.12em; opacity: 0.6; margin-bottom: 12px; }
-    .yearend-banner h2 { font-family: var(--font-serif); font-size: clamp(22px, 6vw, 30px); font-weight: 400; line-height: 1.6; margin-bottom: 16px; }
-    .yearend-banner p { font-size: 15px; opacity: 0.75; line-height: 1.85; margin-bottom: 28px; }
-    .yearend-banner .cta-btn { background: #06C755; color: #ffffff; }
+    /* 年末バナー：黒→温かみのある深緑ベースに変更 */
+    .yearend-banner {
+      background: #1a3a2a;
+      color: #f0f0ec;
+      border-radius: var(--radius-lg);
+      padding: 36px 24px;
+      text-align: center;
+    }
+    .yearend-banner .label { font-size: 12px; letter-spacing: 0.12em; opacity: 0.65; margin-bottom: 14px; }
+    .yearend-banner h2 { font-family: var(--font-serif); font-size: clamp(22px, 6vw, 28px); font-weight: 400; line-height: 1.65; margin-bottom: 18px; color: #f0f0ec; }
+    .yearend-banner p { font-size: 14px; opacity: 0.78; line-height: 1.9; margin-bottom: 28px; }
+    .yearend-banner .cta-btn { background: #06C755; color: #ffffff; font-size: 16px; }
     .yearend-note { font-size: 12px; opacity: 0.55; margin-top: 12px; }
 
     .faq-list { margin: 24px 0; }
     .faq-item { padding: 18px 0; border-bottom: 1px solid var(--color-border); }
     .faq-item:last-child { border-bottom: none; }
-    .faq-q { font-size: 16px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; line-height: 1.6; -webkit-tap-highlight-color: transparent; }
-    .toggle { flex-shrink: 0; font-size: 24px; color: var(--color-text3); font-weight: 300; line-height: 1; transition: transform 0.2s; }
-    .faq-a { font-size: 15px; color: var(--color-text2); line-height: 1.9; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.2s; }
+    .faq-q { font-size: 15px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; line-height: 1.65; -webkit-tap-highlight-color: transparent; }
+    .toggle { flex-shrink: 0; font-size: 22px; color: var(--color-text3); font-weight: 300; line-height: 1; transition: transform 0.2s; margin-top: 1px; }
+    .faq-a { font-size: 14px; color: var(--color-text2); line-height: 1.9; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.2s; }
     .faq-item.open .faq-a { max-height: 320px; padding-top: 12px; }
     .faq-item.open .toggle { transform: rotate(45deg); }
 
-    .footer { padding: 56px 0 48px; text-align: center; }
-    .footer-title { font-family: var(--font-serif); font-size: 22px; font-weight: 400; margin-bottom: 16px; line-height: 1.6; }
-    .footer-note { font-size: 15px; color: var(--color-text2); margin-bottom: 28px; line-height: 1.9; }
+    .footer { padding: 48px 0; text-align: center; }
+    .footer-title { font-family: var(--font-serif); font-size: 20px; font-weight: 400; margin-bottom: 14px; line-height: 1.6; }
+    .footer-note { font-size: 15px; color: var(--color-text2); margin-bottom: 24px; line-height: 1.9; }
 
-    @media (max-width: 400px) {
+    @media (max-width: 390px) {
       .grammar-grid { grid-template-columns: repeat(2, 1fr); }
       .price-payment { grid-template-columns: 1fr; }
-      .vc-cell { padding: 10px; font-size: 12px; }
+      .vc-cell { padding: 9px 10px; font-size: 12px; }
       .vc-cell.label { font-size: 11px; }
+      .profile-tags .profile-tag:nth-child(3) { display: none; }
     }
   </style>
 </head>
@@ -194,10 +210,7 @@
     <div class="hero">
       <div class="badge">2026年10月5日 開講 — モニター5名限定</div>
       <div class="service-name">韓国語アウトプットジム</div>
-      <h1>
-        <span class="line1">「勉強してるのに話せない」が、</span>
-        <span class="line2"><em>12週間で変わる。</em></span>
-      </h1>
+      <h1>「勉強してるのに話せない」が、<br><em>12週間で変わる。</em></h1>
       <div class="hero-ko">말할 수 있는 당신이 된다</div>
       <p class="hero-sub">アウトプットだけに特化した韓国語スクール。<br>「知っている」状態から「話せる」状態へ。</p>
       <div class="prereg-box">
@@ -212,7 +225,7 @@
 
     <section>
       <div class="section-label">こんな方へ</div>
-      <div class="section-title">「勉強してきたのに、<br>なぜか話せない」</div>
+      <div class="section-title">「勉強してきたのに、なぜか話せない」</div>
       <ul class="pain-list">
         <li><span class="pain-mark">✕</span>テキストで文法は覚えたのに、いざ話そうとすると言葉が即座に出てこない</li>
         <li><span class="pain-mark">✕</span>「안녕하세요」は言えても、その後が続かない</li>
@@ -224,7 +237,7 @@
 
     <section>
       <div class="section-label">講師について</div>
-      <div class="section-title">「教えるプロ」が<br>設計したコースです。</div>
+      <div class="section-title">「教えるプロ」が設計したコースです。</div>
       <div class="profile-card">
         <div class="profile-top">
           <div class="profile-avatar">顔写真<br>準備中</div>
@@ -254,7 +267,7 @@
 
     <section>
       <div class="section-label">設計思想</div>
-      <div class="section-title">「型 → 自動化 → 実戦」<br>の3ステップで反復する</div>
+      <div class="section-title">「型 → 自動化 → 実戦」の3ステップで反復する</div>
       <div class="flow-steps">
         <div class="flow-step">
           <div class="step-num">1</div>
@@ -295,8 +308,8 @@
 
     <section>
       <div class="section-label">カリキュラムの根拠</div>
-      <div class="section-title">外国語習得研究を<br>ベースに設計しています。</div>
-      <p class="section-body" style="margin-bottom: 20px;">このカリキュラムは、語学習得に関する4つの研究理論をもとに設計されています。</p>
+      <div class="section-title">外国語習得研究をベースに設計しています。</div>
+      <p class="section-body" style="margin-bottom: 16px;">このカリキュラムは、語学習得に関する4つの研究理論をもとに設計されています。</p>
       <div class="research-box">
         <ul class="research-list">
           <li><strong>タスクベース言語教育（TBLT）</strong>実際のコミュニケーション場面を想定したタスクを通じて言語を習得する。瞬間韓作文・日記・レッスンはすべてこの考え方に基づいています。</li>
@@ -353,11 +366,11 @@
 
     <section>
       <div class="section-label">安心保証</div>
-      <div class="section-title">やり切ったのに<br>効果を感じられなければ、<br>4週間無料延長します。</div>
+      <div class="section-title">やり切ったのに効果を感じられなければ、4週間無料延長します。</div>
       <div class="guarantee-card">
         <div class="guarantee-header">
           <div class="guarantee-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" stroke="var(--color-text2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="var(--color-text2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" stroke="var(--color-text2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="var(--color-text2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div class="guarantee-title">4週間無料延長保証</div>
         </div>
@@ -421,27 +434,27 @@
         </div>
         <ul class="price-includes">
           <li>
-            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span>瞬間韓作文（録音5文）+ フィードバック<span class="li-note">月〜金曜日 · AI添削 + コーチチェック</span></span>
           </li>
           <li>
-            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span>1文日記（テキスト + 録音）+ フィードバック<span class="li-note">月〜金曜日 · AI添削 + コーチチェック</span></span>
           </li>
           <li>
-            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span>ネイティブレッスン 週1回（20分 × 12回）<span class="li-note">土日どちらか · Zoomにて · レッスン後フィードバックあり</span></span>
           </li>
           <li>
-            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span>日本人コーチ面談 月2〜3回<span class="li-note">Zoomにて</span></span>
           </li>
           <li>
-            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span>専用オンライン学習スペースへのアクセス<span class="li-note">課題の提出・フィードバックの受け取りはすべてここで完結</span></span>
           </li>
           <li>
-            <span class="check"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span>4週間無料延長保証<span class="li-note">条件を満たした上でご自身が効果を感じられなかった場合</span></span>
           </li>
         </ul>
