@@ -36,11 +36,44 @@ const userProgressStore = globalThis.__lineTrialUserStore || new Map();
 globalThis.__lineTrialUserStore = userProgressStore;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+const JST_OFFSET_HOURS = 9;
+const LESSON_RELEASE_HOUR_JST = 8;
+const UPSTASH_REDIS_REST_URL = process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
+const TRIAL_USERS_KEY = 'trial:users';
 
 function json(res, status, body) {
   res.statusCode = status;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.end(JSON.stringify(body));
+}
+
+function hasRedisConfig() {
+  return Boolean(UPSTASH_REDIS_REST_URL && UPSTASH_REDIS_REST_TOKEN);
+}
+
+async function redisCommand(command, ...args) {
+  if (!hasRedisConfig()) return null;
+
+  const response = await fetch(`${UPSTASH_REDIS_REST_URL}/`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${UPSTASH_REDIS_REST_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ command: [command, ...args] })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Upstash command failed: ${response.status} ${await response.text()}`);
+  }
+
+  const data = await response.json();
+  if (data.error) {
+    throw new Error(`Upstash command error: ${data.error}`);
+  }
+
+  return data.result;
 }
 
 function verifyLineSignature(rawBody, signature) {
@@ -63,31 +96,144 @@ function startTrial(userId) {
     userId,
     startedAt,
     completedDays: [],
-    selectedDayIndex: null
+    selectedDayIndex: null,
+    deliveredDays: [0]
   };
-  userProgressStore.set(userId, progress);
   return progress;
 }
 
-function getOrCreateProgress(userId) {
-  const existing = userProgressStore.get(userId);
+function normalizeProgress(progress, userId) {
+  if (!progress) return null;
+  return {
+    userId,
+    startedAt: progress.startedAt || new Date().toISOString(),
+    completedDays: Array.isArray(progress.completedDays) ? progress.completedDays : [],
+    selectedDayIndex:
+      progress.selectedDayIndex === null || Number.isInteger(progress.selectedDayIndex) ? progress.selectedDayIndex : null,
+    deliveredDays: Array.isArray(progress.deliveredDays) ? progress.deliveredDays : [0]
+  };
+}
+
+function serializeProgress(progress) {
+  return {
+    startedAt: progress.startedAt,
+    completedDays: JSON.stringify(progress.completedDays || []),
+    selectedDayIndex: progress.selectedDayIndex === null ? 'null' : String(progress.selectedDayIndex),
+    deliveredDays: JSON.stringify(progress.deliveredDays || [])
+  };
+}
+
+async function loadProgress(userId) {
+  if (hasRedisConfig()) {
+    const key = `trial:user:${userId}`;
+    const stored = await redisCommand('HGETALL', key);
+    if (!stored || stored.length === 0) return null;
+
+    const map = {};
+    for (let i = 0; i < stored.length; i += 2) {
+      map[stored[i]] = stored[i + 1];
+    }
+
+    const parsed = {
+      startedAt: map.startedAt,
+      completedDays: tryParseJson(map.completedDays) || [],
+      selectedDayIndex: map.selectedDayIndex === 'null' ? null : Number(map.selectedDayIndex),
+      deliveredDays: tryParseJson(map.deliveredDays) || [0]
+    };
+    return normalizeProgress(parsed, userId);
+  }
+
+  return normalizeProgress(userProgressStore.get(userId), userId);
+}
+
+async function saveProgress(progress) {
+  const normalized = normalizeProgress(progress, progress.userId);
+  if (!normalized) return;
+
+  if (hasRedisConfig()) {
+    const key = `trial:user:${normalized.userId}`;
+    const serialized = serializeProgress(normalized);
+    await redisCommand(
+      'HSET',
+      key,
+      'startedAt',
+      serialized.startedAt,
+      'completedDays',
+      serialized.completedDays,
+      'selectedDayIndex',
+      serialized.selectedDayIndex,
+      'deliveredDays',
+      serialized.deliveredDays
+    );
+    await redisCommand('SADD', TRIAL_USERS_KEY, normalized.userId);
+    return;
+  }
+
+  userProgressStore.set(normalized.userId, normalized);
+}
+
+async function getOrCreateProgress(userId) {
+  const existing = await loadProgress(userId);
   if (existing) return existing;
-  return startTrial(userId);
+  const created = startTrial(userId);
+  await saveProgress(created);
+  return created;
+}
+
+function getDatePartsInJst(timestamp) {
+  const formatter = new Intl.DateTimeFormat('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+
+  const parts = formatter.formatToParts(new Date(timestamp));
+  const year = Number(parts.find((part) => part.type === 'year')?.value);
+  const month = Number(parts.find((part) => part.type === 'month')?.value);
+  const day = Number(parts.find((part) => part.type === 'day')?.value);
+
+  return { year, month, day };
+}
+
+function toUtcTimestampFromJst({ year, month, day, hour = 0, minute = 0, second = 0 }) {
+  return Date.UTC(year, month - 1, day, hour - JST_OFFSET_HOURS, minute, second, 0);
+}
+
+function getLessonReleaseTimestamp(startedAtISO, dayIndex) {
+  const startedAt = new Date(startedAtISO).getTime();
+
+  if (dayIndex <= 0) {
+    return startedAt;
+  }
+
+  const { year, month, day } = getDatePartsInJst(startedAt);
+  const day2ReleaseBase = toUtcTimestampFromJst({
+    year,
+    month,
+    day: day + 1,
+    hour: LESSON_RELEASE_HOUR_JST
+  });
+
+  return day2ReleaseBase + DAY_MS * (dayIndex - 1);
 }
 
 function getAvailableDayIndex(startedAtISO) {
-  const startedAt = new Date(startedAtISO).getTime();
   const now = Date.now();
-  const elapsedDays = Math.floor((now - startedAt) / DAY_MS);
-  return Math.min(Math.max(elapsedDays, 0), TRIAL_SENTENCES.length - 1);
+
+  let availableDayIndex = 0;
+
+  for (let dayIndex = 1; dayIndex < TRIAL_SENTENCES.length; dayIndex += 1) {
+    if (now >= getLessonReleaseTimestamp(startedAtISO, dayIndex)) {
+      availableDayIndex = dayIndex;
+    }
+  }
+
+  return availableDayIndex;
 }
 
 function formatDate(isoString) {
   return new Date(isoString).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
-}
-
-function saveProgress(progress) {
-  userProgressStore.set(progress.userId, progress);
 }
 
 async function replyMessage(replyToken, messages) {
@@ -106,6 +252,25 @@ async function replyMessage(replyToken, messages) {
   if (!res.ok) {
     const text = await res.text();
     console.error('LINE reply failed:', res.status, text);
+  }
+}
+
+async function pushMessage(userId, messages) {
+  const res = await fetch('https://api.line.me/v2/bot/message/push', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${LINE_CHANNEL_ACCESS_TOKEN}`
+    },
+    body: JSON.stringify({
+      to: userId,
+      messages: Array.isArray(messages) ? messages : [messages]
+    })
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`LINE push failed: ${res.status} ${text}`);
   }
 }
 
@@ -324,11 +489,55 @@ function parseDayFromText(text) {
   return Number.isInteger(day) ? day - 1 : null;
 }
 
+function getDayAssignmentMessage(dayIndex) {
+  const lesson = TRIAL_SENTENCES[dayIndex];
+  if (!lesson) return null;
+
+  return (
+    `【${lesson.day}日目の課題】\n` +
+    '以下の日本語を韓国語で言って、音声を送ってください。\n' +
+    `「${lesson.japanesePrompt}」\n` +
+    `先に「${lesson.day}日目」と送ってから録音するとスムーズです。`
+  );
+}
+
+export async function sendScheduledAssignments(now = Date.now()) {
+  if (!hasRedisConfig()) {
+    return { ok: true, skipped: true, reason: 'Redis is not configured' };
+  }
+
+  const userIds = (await redisCommand('SMEMBERS', TRIAL_USERS_KEY)) || [];
+  let sentCount = 0;
+
+  for (const userId of userIds) {
+    const progress = await loadProgress(userId);
+    if (!progress) continue;
+
+    for (let dayIndex = 1; dayIndex < TRIAL_SENTENCES.length; dayIndex += 1) {
+      const alreadyDelivered = progress.deliveredDays.includes(dayIndex);
+      const releaseAt = getLessonReleaseTimestamp(progress.startedAt, dayIndex);
+
+      if (!alreadyDelivered && now >= releaseAt) {
+        const text = getDayAssignmentMessage(dayIndex);
+        await pushMessage(userId, { type: 'text', text });
+        progress.deliveredDays.push(dayIndex);
+        progress.deliveredDays.sort((a, b) => a - b);
+        sentCount += 1;
+      }
+    }
+
+    await saveProgress(progress);
+  }
+
+  return { ok: true, skipped: false, sentCount, users: userIds.length };
+}
+
 async function handleFollow(event) {
   const userId = event.source?.userId;
   if (!userId) return;
 
-  startTrial(userId);
+  const progress = startTrial(userId);
+  await saveProgress(progress);
 
   await replyMessage(event.replyToken, [
     {
@@ -361,7 +570,7 @@ async function handleTextMessage(event) {
   const input = event.message?.text;
   if (!userId || !input) return;
 
-  const progress = getOrCreateProgress(userId);
+  const progress = await getOrCreateProgress(userId);
   const dayIndex = parseDayFromText(input);
 
   if (dayIndex === null) return;
@@ -369,7 +578,7 @@ async function handleTextMessage(event) {
   const availableDayIndex = getAvailableDayIndex(progress.startedAt);
 
   if (dayIndex > availableDayIndex) {
-    const unlockDate = new Date(new Date(progress.startedAt).getTime() + DAY_MS * dayIndex).toISOString();
+    const unlockDate = new Date(getLessonReleaseTimestamp(progress.startedAt, dayIndex)).toISOString();
     await replyMessage(event.replyToken, {
       type: 'text',
       text: `まだDay ${dayIndex + 1} は解放されていません。${formatDate(unlockDate)} 以降に取り組めます。`
@@ -386,7 +595,7 @@ async function handleTextMessage(event) {
   }
 
   progress.selectedDayIndex = dayIndex;
-  saveProgress(progress);
+  await saveProgress(progress);
 
   await replyMessage(event.replyToken, {
     type: 'text',
@@ -400,7 +609,7 @@ async function handleAudioMessage(event) {
 
   if (!userId || !messageId) return;
 
-  const progress = getOrCreateProgress(userId);
+  const progress = await getOrCreateProgress(userId);
   const availableDayIndex = getAvailableDayIndex(progress.startedAt);
 
   // Day1が未提出なら、Day指定なしでもDay1として受け付ける
@@ -423,7 +632,7 @@ async function handleAudioMessage(event) {
   }
 
   if (targetDayIndex > availableDayIndex) {
-    const unlockDate = new Date(new Date(progress.startedAt).getTime() + DAY_MS * targetDayIndex).toISOString();
+    const unlockDate = new Date(getLessonReleaseTimestamp(progress.startedAt, targetDayIndex)).toISOString();
     await replyMessage(event.replyToken, {
       type: 'text',
       text: `Day ${targetDayIndex + 1} はまだ解放されていません。${formatDate(unlockDate)} 以降に取り組めます。`
@@ -462,7 +671,7 @@ async function handleAudioMessage(event) {
     progress.completedDays.push(targetDayIndex);
     progress.completedDays.sort((a, b) => a - b);
   }
-  saveProgress(progress);
+  await saveProgress(progress);
 
   const messages = [
     {
