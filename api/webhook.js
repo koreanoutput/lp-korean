@@ -11,8 +11,7 @@ const TRIAL_SENTENCES = [
     day: 1,
     japanesePrompt: '私は毎朝コーヒーを飲みます。',
     modelAnswer: '저는 매일 아침에 커피를 마셔요.',
-    checkPoint:
-      '「아침에」の에を入れること。「커피」が「코피」になっていないか確認。日常会話では「마십니다」より「마셔요」の形が自然です。'
+    checkPoint: '「아침에」の에を入れること。「커피」が「코피」になっていないか確認。日常会話では「마십니다」より「마셔요」の形が自然です。'
   },
   {
     day: 2,
@@ -39,60 +38,9 @@ globalThis.__lineTrialUserStore = userProgressStore;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const JST_OFFSET_HOURS = 9;
 const LESSON_RELEASE_HOUR_JST = 8;
-const UPSTASH_REDIS_REST_URL = process.env.UPSTASH_REDIS_REST_URL;
-const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
-const TRIAL_USERS_KEY = 'trial:users';
-
-// LINE公式アカウント側で配信設定するときの文面テンプレート
-// （必要に応じてLINE管理画面へコピペして使用）
-const LINE_DAY2_BROADCAST_TEXT =
-  '2日目の課題をお送りします！\n' +
-  '─────────────\n' +
-  '【2日目：単語を変えて使う】\n' +
-  '昨日と同じ文法で、単語だけ変えてみましょう。\n' +
-  '「私は今、家で仕事をしています。」\n' +
-  '─────────────\n' +
-  '【録音の送り方】\n' +
-  '① まず「2日目」とメッセージを送信してください。\n' +
-  '⚠️ このメッセージを送らないと添削が届きません。\n' +
-  '② トーク画面下のマイクボタンを押して録音し、送信してください。\n' +
-  '送っていただいた音声にAIがフィードバックをお返しします。\n' +
-  '正解は添削と一緒にお届けします。\n' +
-  '明日は最終日です。3日目もお楽しみに！';
-
-const LINE_DAY3_BROADCAST_TEXT =
-  '最終日の課題をお送りします！\n' +
-  '─────────────\n' +
-  '【3日目：自分の言葉で話す】\n' +
-  '今日は空欄を自分で埋めて録音してください。\n' +
-  '「今日は＿＿をしています。」\n' +
-  '何を入れてもOKです。\n' +
-  '「今日は韓国語を勉強しています」でも\n' +
-  '「今日は家でのんびりしています」でも。\n' +
-  '自分の言葉で言えたら、それがアウトプットです。\n' +
-  '─────────────\n' +
-  '【録音の送り方】\n' +
-  '① まず「3日目」とメッセージを送信してください。\n' +
-  '⚠️ このメッセージを送らないと添削が届きません。\n' +
-  '② トーク画面下のマイクボタンを押して録音し、送信してください。\n' +
-  '送っていただいた音声にAIがフィードバックをお返しします。\n' +
-  '正解は添削と一緒にお届けします。\n' +
-  '3日間、お疲れさまでした！';
-
-const LINE_DAY4_BROADCAST_TEXT =
-  '昨日までの3日間体験、ありがとうございました。\n' +
-  '改めてコースのご案内です。\n' +
-  '韓国語アウトプットジムでは、「勉強したけど話せない」方を対象に、12週間でアウトプット特化の練習を毎日続けます。\n' +
-  '✔︎ 瞬間韓作文（録音5文）\n' +
-  '✔︎ 1文日記\n' +
-  '✔︎ ネイティブレッスン 週1回\n' +
-  '✔︎ コーチ面談 月2〜3回\n' +
-  '10月5日開講・モニター5名限定\n' +
-  'モニター価格 ¥59,400（正規 ¥98,000）\n' +
-  '3分割払い可\n' +
-  '【申し込みフォーム】\n' +
-  'https://my-app-next-khaki.vercel.app/\n' +
-  '「自分に合うか不安」「もう少し聞きたい」という方も、このままメッセージをどうぞ。';
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_TABLE = 'trial_user_progress';
 
 function json(res, status, body) {
   res.statusCode = status;
@@ -100,32 +48,38 @@ function json(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
-function hasRedisConfig() {
-  return Boolean(UPSTASH_REDIS_REST_URL && UPSTASH_REDIS_REST_TOKEN);
+function hasSupabaseConfig() {
+  return Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY);
 }
 
-async function redisCommand(command, ...args) {
-  if (!hasRedisConfig()) return null;
+async function supabaseRequest(pathWithQuery, { method = 'GET', body, prefer } = {}) {
+  if (!hasSupabaseConfig()) return null;
 
-  const response = await fetch(`${UPSTASH_REDIS_REST_URL}/`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${UPSTASH_REDIS_REST_TOKEN}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ command: [command, ...args] })
+  const headers = {
+    apikey: SUPABASE_SERVICE_ROLE_KEY,
+    Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+    'Content-Type': 'application/json'
+  };
+  if (prefer) {
+    headers.Prefer = prefer;
+  }
+
+  const response = await fetch(`${SUPABASE_URL}/rest/v1/${pathWithQuery}`, {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined
   });
 
   if (!response.ok) {
-    throw new Error(`Upstash command failed: ${response.status} ${await response.text()}`);
+    throw new Error(`Supabase request failed: ${response.status} ${await response.text()}`);
   }
 
-  const data = await response.json();
-  if (data.error) {
-    throw new Error(`Upstash command error: ${data.error}`);
+  const text = await response.text();
+  if (!text) {
+    return null;
   }
 
-  return data.result;
+  return JSON.parse(text);
 }
 
 function verifyLineSignature(rawBody, signature) {
@@ -166,33 +120,22 @@ function normalizeProgress(progress, userId) {
   };
 }
 
-function serializeProgress(progress) {
-  return {
-    startedAt: progress.startedAt,
-    completedDays: JSON.stringify(progress.completedDays || []),
-    selectedDayIndex: progress.selectedDayIndex === null ? 'null' : String(progress.selectedDayIndex),
-    deliveredDays: JSON.stringify(progress.deliveredDays || [])
-  };
-}
-
 async function loadProgress(userId) {
-  if (hasRedisConfig()) {
-    const key = `trial:user:${userId}`;
-    const stored = await redisCommand('HGETALL', key);
-    if (!stored || stored.length === 0) return null;
+  if (hasSupabaseConfig()) {
+    const encodedUserId = encodeURIComponent(userId);
+    const rows = await supabaseRequest(
+      `${SUPABASE_TABLE}?user_id=eq.${encodedUserId}&select=user_id,started_at,completed_days,selected_day_index,delivered_days&limit=1`
+    );
+    if (!Array.isArray(rows) || rows.length === 0) return null;
 
-    const map = {};
-    for (let i = 0; i < stored.length; i += 2) {
-      map[stored[i]] = stored[i + 1];
-    }
-
+    const row = rows[0];
     const parsed = {
-      startedAt: map.startedAt,
-      completedDays: tryParseJson(map.completedDays) || [],
-      selectedDayIndex: map.selectedDayIndex === 'null' ? null : Number(map.selectedDayIndex),
-      deliveredDays: tryParseJson(map.deliveredDays) || [0]
+      startedAt: row.started_at,
+      completedDays: Array.isArray(row.completed_days) ? row.completed_days : [],
+      selectedDayIndex: Number.isInteger(row.selected_day_index) ? row.selected_day_index : null,
+      deliveredDays: Array.isArray(row.delivered_days) ? row.delivered_days : [0]
     };
-    return normalizeProgress(parsed, userId);
+    return normalizeProgress(parsed, row.user_id || userId);
   }
 
   return normalizeProgress(userProgressStore.get(userId), userId);
@@ -202,22 +145,20 @@ async function saveProgress(progress) {
   const normalized = normalizeProgress(progress, progress.userId);
   if (!normalized) return;
 
-  if (hasRedisConfig()) {
-    const key = `trial:user:${normalized.userId}`;
-    const serialized = serializeProgress(normalized);
-    await redisCommand(
-      'HSET',
-      key,
-      'startedAt',
-      serialized.startedAt,
-      'completedDays',
-      serialized.completedDays,
-      'selectedDayIndex',
-      serialized.selectedDayIndex,
-      'deliveredDays',
-      serialized.deliveredDays
-    );
-    await redisCommand('SADD', TRIAL_USERS_KEY, normalized.userId);
+  if (hasSupabaseConfig()) {
+    await supabaseRequest(`${SUPABASE_TABLE}?on_conflict=user_id`, {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates,return=minimal',
+      body: [
+        {
+          user_id: normalized.userId,
+          started_at: normalized.startedAt,
+          completed_days: normalized.completedDays,
+          selected_day_index: normalized.selectedDayIndex,
+          delivered_days: normalized.deliveredDays
+        }
+      ]
+    });
     return;
   }
 
@@ -554,11 +495,12 @@ function getDayAssignmentMessage(dayIndex) {
 }
 
 export async function sendScheduledAssignments(now = Date.now()) {
-  if (!hasRedisConfig()) {
-    return { ok: true, skipped: true, reason: 'Redis is not configured' };
+  if (!hasSupabaseConfig()) {
+    return { ok: true, skipped: true, reason: 'Supabase is not configured' };
   }
 
-  const userIds = (await redisCommand('SMEMBERS', TRIAL_USERS_KEY)) || [];
+  const rows = (await supabaseRequest(`${SUPABASE_TABLE}?select=user_id`)) || [];
+  const userIds = rows.map((row) => row.user_id).filter(Boolean);
   let sentCount = 0;
 
   for (const userId of userIds) {
@@ -743,15 +685,12 @@ async function handleAudioMessage(event) {
     messages.push({
       type: 'text',
       text:
-        '3日間、お疲れさまでした！\n' +
-        '毎日続けてくださってありがとうございます。\n' +
-        '今日の添削をご確認ください。\n' +
-        '3日間やってみていかがでしたか？\n' +
+        '3日間の無料体験、完走おめでとうございます！🎉\n' +
+        'ご参加ありがとうございました。\n\n' +
         '「続けたい」「もっとやりたい」と感じていただけていたら、ぜひ正式コースへ。\n' +
         '10月5日開講・モニター5名限定です。\n' +
         '正規価格 ¥98,000のところ、モニター特別価格 ¥59,400（40%OFF）でご参加いただけます。\n' +
-        '【申し込みフォーム】\n' +
-        'https://my-app-next-khaki.vercel.app/\n' +
+        '【申し込みフォームURL】\n' +
         'ご質問はお気軽にどうぞ。明日も改めてご案内をお送りします。'
     });
   } else {
