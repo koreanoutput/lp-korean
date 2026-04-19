@@ -41,7 +41,8 @@ const JST_OFFSET_HOURS = 9;
 const LESSON_RELEASE_HOUR_JST = 8;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const SUPABASE_TABLE = 'trial_user_progress';
+const PROGRESS_TABLE = 'trial_user_progress';
+const REVIEW_TABLE = 'trial_feedback_reviews';
 
 function json(res, status, body) {
   res.statusCode = status;
@@ -125,7 +126,7 @@ async function loadProgress(userId) {
   if (hasSupabaseConfig()) {
     const encodedUserId = encodeURIComponent(userId);
     const rows = await supabaseRequest(
-      `${SUPABASE_TABLE}?user_id=eq.${encodedUserId}&select=user_id,started_at,completed_days,selected_day_index,delivered_days&limit=1`
+      `${PROGRESS_TABLE}?user_id=eq.${encodedUserId}&select=user_id,started_at,completed_days,selected_day_index,delivered_days&limit=1`
     );
     if (!Array.isArray(rows) || rows.length === 0) return null;
 
@@ -147,7 +148,7 @@ async function saveProgress(progress) {
   if (!normalized) return;
 
   if (hasSupabaseConfig()) {
-    await supabaseRequest(`${SUPABASE_TABLE}?on_conflict=user_id`, {
+    await supabaseRequest(`${PROGRESS_TABLE}?on_conflict=user_id`, {
       method: 'POST',
       prefer: 'resolution=merge-duplicates,return=minimal',
       body: [
@@ -172,6 +173,31 @@ async function getOrCreateProgress(userId) {
   const created = startTrial(userId);
   await saveProgress(created);
   return created;
+}
+
+async function loadLatestReview(userId, dayIndex, statuses = ['pending', 'approved']) {
+  if (!hasSupabaseConfig()) return null;
+
+  const encodedUserId = encodeURIComponent(userId);
+  const statusFilter = statuses.join(',');
+  const rows = await supabaseRequest(
+    `${REVIEW_TABLE}?user_id=eq.${encodedUserId}&day_index=eq.${dayIndex}&status=in.(${statusFilter})&select=*&order=created_at.desc&limit=1`
+  );
+
+  if (!Array.isArray(rows) || rows.length === 0) return null;
+  return rows[0];
+}
+
+async function createReviewSubmission(submission) {
+  if (!hasSupabaseConfig()) return null;
+
+  const rows = await supabaseRequest(REVIEW_TABLE, {
+    method: 'POST',
+    prefer: 'return=representation',
+    body: [submission]
+  });
+
+  return Array.isArray(rows) ? rows[0] || null : null;
 }
 
 function getDatePartsInJst(timestamp) {
@@ -500,7 +526,7 @@ export async function sendScheduledAssignments(now = Date.now()) {
     return { ok: true, skipped: true, reason: 'Supabase is not configured' };
   }
 
-  const rows = (await supabaseRequest(`${SUPABASE_TABLE}?select=user_id`)) || [];
+  const rows = (await supabaseRequest(`${PROGRESS_TABLE}?select=user_id`)) || [];
   const userIds = rows.map((row) => row.user_id).filter(Boolean);
   let sentCount = 0;
 
@@ -598,6 +624,40 @@ async function handleTextMessage(event) {
   });
 }
 
+function buildFeedbackText(lesson, recognizedText, feedback) {
+  return (
+    `【Day ${lesson.day} フィードバック】\n` +
+    `あなたの発話(文字起こし): ${recognizedText || '(聞き取り結果なし)'}\n` +
+    `総合スコア: ${feedback.score}/100\n\n` +
+    `発音: ${feedback.pronunciation}\n` +
+    `イントネーション: ${feedback.intonation}\n` +
+    `改善ポイント: ${feedback.fix}\n` +
+    `模範文: ${feedback.model}`
+  );
+}
+
+function buildFollowupText(progress, dayIndex) {
+  const willCompleteAll = progress.completedDays.length + 1 >= TRIAL_SENTENCES.length;
+
+  if (willCompleteAll) {
+    return (
+      '3日間の無料体験、完走おめでとうございます！🎉\n' +
+      'ご参加ありがとうございました。\n\n' +
+      '「続けたい」「もっとやりたい」と感じていただけていたら、ぜひ正式コースへ。\n' +
+      '10月5日開講・モニター5名限定です。\n' +
+      '正規価格 ¥98,000のところ、モニター特別価格 ¥59,400（40%OFF）でご参加いただけます。\n' +
+      '【申し込みフォームURL】\n' +
+      'ご質問はお気軽にどうぞ。明日も改めてご案内をお送りします。'
+    );
+  }
+
+  if (dayIndex === 0) {
+    return '内容を確認してからフィードバックをお送りします。次回以降は先に「2日目」または「3日目」と送ってから録音してください。';
+  }
+
+  return '内容を確認してからフィードバックをお送りします。';
+}
+
 async function handleAudioMessage(event) {
   const userId = event.source?.userId;
   const messageId = event.message?.id;
@@ -642,6 +702,15 @@ async function handleAudioMessage(event) {
     return;
   }
 
+  const existingReview = await loadLatestReview(userId, targetDayIndex);
+  if (existingReview) {
+    await replyMessage(event.replyToken, {
+      type: 'text',
+      text: `Day ${targetDayIndex + 1} の添削は確認待ちです。確認後にお送りします。`
+    });
+    return;
+  }
+
   const audioBuffer = await getAudioContent(messageId);
   const recognizedText = await transcribeAudio(audioBuffer);
 
@@ -660,49 +729,33 @@ async function handleAudioMessage(event) {
   }
 
   progress.selectedDayIndex = null;
-
-  if (!progress.completedDays.includes(targetDayIndex)) {
-    progress.completedDays.push(targetDayIndex);
-    progress.completedDays.sort((a, b) => a - b);
-  }
   await saveProgress(progress);
 
-  const messages = [
-    {
-      type: 'text',
-      text:
-        `【Day ${lesson.day} フィードバック】\n` +
-        `あなたの発話(文字起こし): ${recognizedText || '(聞き取り結果なし)'}\n` +
-        `総合スコア: ${feedback.score}/100\n\n` +
-        `発音: ${feedback.pronunciation}\n` +
-        `イントネーション: ${feedback.intonation}\n` +
-        `改善ポイント: ${feedback.fix}\n` +
-        `模範文: ${feedback.model}`
-    }
-  ];
+  const feedbackText = buildFeedbackText(lesson, recognizedText, feedback);
+  const followupText = buildFollowupText(progress, targetDayIndex);
 
-  if (progress.completedDays.length >= TRIAL_SENTENCES.length) {
-    messages.push({
-      type: 'text',
-      text:
-        '3日間の無料体験、完走おめでとうございます！🎉\n' +
-        'ご参加ありがとうございました。\n\n' +
-        '「続けたい」「もっとやりたい」と感じていただけていたら、ぜひ正式コースへ。\n' +
-        '10月5日開講・モニター5名限定です。\n' +
-        '正規価格 ¥98,000のところ、モニター特別価格 ¥59,400（40%OFF）でご参加いただけます。\n' +
-        '【申し込みフォームURL】\n' +
-        'ご質問はお気軽にどうぞ。明日も改めてご案内をお送りします。'
-    });
-  } else {
-    messages.push({
-      type: 'text',
-      text:
-        '次の提出時は、先に「2日目」または「3日目」と送ってから録音してください。\n' +
-        '（1日目のみ指定なし提出OK）'
-    });
-  }
+  await createReviewSubmission({
+    user_id: userId,
+    day_index: targetDayIndex,
+    lesson_day: lesson.day,
+    source_message_id: messageId,
+    recognized_text: recognizedText,
+    score: feedback.score,
+    pronunciation: feedback.pronunciation,
+    intonation: feedback.intonation,
+    fix: feedback.fix,
+    model: feedback.model,
+    feedback_text: feedbackText,
+    followup_text: followupText,
+    status: 'pending'
+  });
 
-  await replyMessage(event.replyToken, messages);
+  await replyMessage(event.replyToken, {
+    type: 'text',
+    text:
+      `Day ${lesson.day} の録音を受け取りました。\n` +
+      '内容を確認してからフィードバックをお送りします。少しお待ちください。'
+  });
 }
 
 export default async function handler(req, res) {
