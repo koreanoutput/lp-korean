@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI添削レビュー | 韓国語アウトプットジム</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4efe7;
+      --paper: #fffdf8;
+      --ink: #1f221d;
+      --muted: #657061;
+      --line: rgba(31, 34, 29, 0.14);
+      --accent: #1d5f4a;
+      --accent-2: #dbe9df;
+      --warn: #8a5a16;
+      --danger: #9c3a2f;
+      --shadow: 0 18px 38px rgba(31, 34, 29, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(219, 233, 223, 0.9), transparent 30%),
+        linear-gradient(180deg, #f8f4ed 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 18px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(29, 95, 74, 0.98), rgba(41, 60, 49, 0.98));
+      color: #f6f2eb;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.72;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.18;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 720px;
+      line-height: 1.8;
+      color: rgba(246, 242, 235, 0.86);
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1.7fr 0.9fr auto auto;
+      gap: 12px;
+      align-items: end;
+      background: rgba(255, 253, 248, 0.82);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+      position: sticky;
+      top: 12px;
+      z-index: 3;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    input, select, textarea, button {
+      font: inherit;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 14px;
+      padding: 14px 15px;
+      color: var(--ink);
+    }
+
+    textarea {
+      min-height: 128px;
+      resize: vertical;
+      line-height: 1.75;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:disabled { opacity: 0.45; cursor: wait; transform: none; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #ede7dc;
+      color: var(--ink);
+    }
+
+    .statusbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin: 12px 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .cards {
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(255, 253, 248, 0.92);
+      border: 1px solid rgba(31, 34, 29, 0.08);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      background: linear-gradient(180deg, rgba(219, 233, 223, 0.82), rgba(255, 253, 248, 0.82));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-title {
+      font-size: 22px;
+      margin: 0 0 6px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(255, 253, 248, 0.82);
+      border: 1px solid var(--line);
+    }
+
+    .score {
+      text-align: right;
+      min-width: 112px;
+    }
+
+    .score strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .card-body {
+      padding: 18px 20px 20px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .box {
+      background: rgba(244, 239, 231, 0.62);
+      border: 1px solid rgba(31, 34, 29, 0.07);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .box h2 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .box p {
+      margin: 0;
+      white-space: pre-wrap;
+      line-height: 1.8;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .approve { background: var(--accent); color: #fff; }
+    .save { background: #22352c; color: #fff; }
+    .reject { background: #f1e3de; color: var(--danger); }
+
+    .empty {
+      background: rgba(255, 253, 248, 0.9);
+      border: 1px dashed var(--line);
+      border-radius: 22px;
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .note {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .inline-status {
+      font-size: 13px;
+      color: var(--warn);
+      min-height: 1.6em;
+    }
+
+    @media (max-width: 900px) {
+      .toolbar { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
+      .card-head { flex-direction: column; }
+      .score { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">Manual Review Console</div>
+      <h1>AI添削の確認、修正、承認送信をここでまとめて。</h1>
+      <p>音声が届くと `pending` に保存されます。この画面で本文を直してから「承認して送信」を押すと、その内容がLINEに送られます。</p>
+    </section>
+
+    <section class="toolbar">
+      <div class="field">
+        <label for="secret">Secret</label>
+        <input id="secret" type="password" placeholder="REVIEW_SECRET または CRON_SECRET">
+      </div>
+      <div class="field">
+        <label for="status-filter">Status</label>
+        <select id="status-filter">
+          <option value="pending">pending</option>
+          <option value="rejected">rejected</option>
+          <option value="sent">sent</option>
+          <option value="approved">approved</option>
+        </select>
+      </div>
+      <button class="btn-secondary" id="save-secret">Secret保存</button>
+      <button class="btn-primary" id="refresh">一覧を更新</button>
+    </section>
+
+    <div class="statusbar">
+      <div id="summary">未読込です。</div>
+      <div class="note">URLは `/review.html` です。ブラウザだけで操作できます。</div>
+    </div>
+
+    <section id="cards" class="cards"></section>
+  </main>
+
+  <template id="card-template">
+    <article class="card">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title"></h2>
+          <div class="meta"></div>
+        </div>
+        <div class="score">
+          <strong></strong>
+          <span>AI score</span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="grid">
+          <div class="box">
+            <h2>文字起こし</h2>
+            <p data-field="recognizedText"></p>
+          </div>
+          <div class="box">
+            <h2>内部メモ</h2>
+            <textarea data-input="reviewerNote" placeholder="差し戻し理由や補足メモ"></textarea>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="box">
+            <h2>フィードバック本文</h2>
+            <textarea data-input="feedbackText"></textarea>
+          </div>
+          <div class="box">
+            <h2>追送メッセージ</h2>
+            <textarea data-input="followupText"></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="save" data-action="update">下書きを保存</button>
+          <button class="approve" data-action="approve">承認して送信</button>
+          <button class="reject" data-action="reject">差し戻し</button>
+        </div>
+        <div class="inline-status"></div>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    const secretInput = document.getElementById('secret');
+    const statusFilter = document.getElementById('status-filter');
+    const saveSecretButton = document.getElementById('save-secret');
+    const refreshButton = document.getElementById('refresh');
+    const cards = document.getElementById('cards');
+    const summary = document.getElementById('summary');
+    const template = document.getElementById('card-template');
+    const STORAGE_KEY = 'lp-korean-review-secret';
+
+    function formatDate(value) {
+      if (!value) return '-';
+      return new Date(value).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+    }
+
+    function escapeHtml(value) {
+      return String(value || '');
+    }
+
+    function getSecret() {
+      return secretInput.value.trim();
+    }
+
+    function setSummary(text) {
+      summary.textContent = text;
+    }
+
+    function toggleBusy(isBusy) {
+      refreshButton.disabled = isBusy;
+    }
+
+    async function request(path, options = {}) {
+      const secret = getSecret();
+      if (!secret) {
+        throw new Error('Secret を入力してください');
+      }
+
+      const separator = path.includes('?') ? '&' : '?';
+      const response = await fetch(`${path}${separator}secret=${encodeURIComponent(secret)}`, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(options.headers || {})
+        }
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || `Request failed: ${response.status}`);
+      }
+
+      return data;
+    }
+
+    function buildMeta(submission) {
+      return [
+        `user: ${submission.user_id}`,
+        `created: ${formatDate(submission.created_at)}`,
+        `status: ${submission.status}`,
+        `id: ${submission.id}`
+      ];
+    }
+
+    function renderSubmissions(submissions) {
+      cards.innerHTML = '';
+
+      if (!submissions.length) {
+        cards.innerHTML = '<div class="empty">このステータスのデータはまだありません。<br>pending を選ぶと確認待ちの添削がここに並びます。</div>';
+        return;
+      }
+
+      submissions.forEach((submission) => {
+        const fragment = template.content.cloneNode(true);
+        const card = fragment.querySelector('.card');
+        const title = fragment.querySelector('.card-title');
+        const meta = fragment.querySelector('.meta');
+        const score = fragment.querySelector('.score strong');
+        const recognizedText = fragment.querySelector('[data-field="recognizedText"]');
+        const feedbackText = fragment.querySelector('[data-input="feedbackText"]');
+        const followupText = fragment.querySelector('[data-input="followupText"]');
+        const reviewerNote = fragment.querySelector('[data-input="reviewerNote"]');
+        const inlineStatus = fragment.querySelector('.inline-status');
+
+        title.textContent = `Day ${submission.lesson_day} 添削レビュー`;
+        score.textContent = submission.score ?? 0;
+        recognizedText.textContent = escapeHtml(submission.recognized_text || '(聞き取り結果なし)');
+        feedbackText.value = submission.feedback_text || '';
+        followupText.value = submission.followup_text || '';
+        reviewerNote.value = submission.reviewer_note || '';
+
+        buildMeta(submission).forEach((text) => {
+          const pill = document.createElement('span');
+          pill.className = 'pill';
+          pill.textContent = text;
+          meta.appendChild(pill);
+        });
+
+        card.querySelectorAll('[data-action]').forEach((button) => {
+          button.addEventListener('click', async () => {
+            const action = button.dataset.action;
+            const payload = {
+              id: submission.id,
+              action,
+              feedbackText: feedbackText.value,
+              followupText: followupText.value,
+              reviewerNote: reviewerNote.value
+            };
+
+            try {
+              inlineStatus.textContent = action === 'approve' ? '送信しています...' : '保存しています...';
+              card.querySelectorAll('button').forEach((item) => { item.disabled = true; });
+
+              const result = await request('/api/review-submissions', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+              });
+
+              inlineStatus.textContent =
+                action === 'approve'
+                  ? '承認して送信しました。'
+                  : action === 'reject'
+                    ? '差し戻しました。'
+                    : '保存しました。';
+
+              if (action !== 'update') {
+                card.style.opacity = '0.55';
+                setTimeout(() => {
+                  loadSubmissions();
+                }, 350);
+              } else if (result.submission) {
+                submission.feedback_text = result.submission.feedback_text;
+                submission.followup_text = result.submission.followup_text;
+                submission.reviewer_note = result.submission.reviewer_note;
+              }
+            } catch (error) {
+              inlineStatus.textContent = error.message || '処理に失敗しました。';
+            } finally {
+              card.querySelectorAll('button').forEach((item) => { item.disabled = false; });
+            }
+          });
+        });
+
+        cards.appendChild(fragment);
+      });
+    }
+
+    async function loadSubmissions() {
+      try {
+        toggleBusy(true);
+        setSummary('読み込み中...');
+        const status = statusFilter.value;
+        const data = await request(`/api/review-submissions?status=${encodeURIComponent(status)}`);
+        const submissions = Array.isArray(data.submissions) ? data.submissions : [];
+        renderSubmissions(submissions);
+        setSummary(`${status} が ${submissions.length} 件あります。`);
+      } catch (error) {
+        cards.innerHTML = `<div class="empty">${escapeHtml(error.message || '読み込みに失敗しました。')}</div>`;
+        setSummary('読み込みに失敗しました。');
+      } finally {
+        toggleBusy(false);
+      }
+    }
+
+    saveSecretButton.addEventListener('click', () => {
+      localStorage.setItem(STORAGE_KEY, getSecret());
+      setSummary('Secret をブラウザに保存しました。');
+    });
+
+    refreshButton.addEventListener('click', loadSubmissions);
+    statusFilter.addEventListener('change', loadSubmissions);
+
+    const savedSecret = localStorage.getItem(STORAGE_KEY);
+    if (savedSecret) {
+      secretInput.value = savedSecret;
+    }
+
+    if (savedSecret) {
+      loadSubmissions();
+    }
+  </script>
+</body>
+</html>
