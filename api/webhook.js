@@ -11,7 +11,8 @@ const TRIAL_SENTENCES = [
     day: 1,
     japanesePrompt: '私は毎朝コーヒーを飲みます。',
     modelAnswer: '저는 매일 아침에 커피를 마셔요.',
-    checkPoint: '「아침에」の에を入れること。「커피」が「코피」になっていないか確認。日常会話では「마십니다」より「마셔요」の形が自然です。'
+    checkPoint:
+      '「아침에」の에を入れること。「커피」が「코피」になっていないか確認。日常会話では「마십니다」より「마셔요」の形が自然です。'
   },
   {
     day: 2,
@@ -606,7 +607,6 @@ async function handleAudioMessage(event) {
   const progress = await getOrCreateProgress(userId);
   const availableDayIndex = getAvailableDayIndex(progress.startedAt);
 
-  // Day1が未提出なら、Day指定なしでもDay1として受け付ける
   const day1Incomplete = !progress.completedDays.includes(0) && availableDayIndex >= 0;
 
   let targetDayIndex = progress.selectedDayIndex;
