@@ -498,6 +498,22 @@ function mapErrorToUserMessage(error) {
     return '現在、音声機能の設定エラーが発生しています。運営側で確認中です。';
   }
 
+  if (message.includes('relation "public.trial_feedback_reviews" does not exist')) {
+    return '添削レビュー保存先の初期設定が未完了です。SupabaseのSQLをもう一度実行してください。';
+  }
+
+  if (message.includes("could not find the table 'public.trial_feedback_reviews'")) {
+    return '添削レビュー保存先の初期設定が未完了です。SupabaseのSQLをもう一度実行してください。';
+  }
+
+  if (message.includes('gen_random_uuid')) {
+    return 'SupabaseのUUID拡張が未設定の可能性があります。SQL Editorで pgcrypto を有効化してください。';
+  }
+
+  if (message.includes('Supabase request failed: 4')) {
+    return 'Supabase保存時に設定エラーが発生しました。テーブル作成と環境変数を確認してください。';
+  }
+
   return '処理中にエラーが発生しました。少し時間をおいて再送してください。';
 }
 
@@ -651,11 +667,7 @@ function buildFollowupText(progress, dayIndex) {
     );
   }
 
-  if (dayIndex === 0) {
-    return '内容を確認してからフィードバックをお送りします。次回以降は先に「2日目」または「3日目」と送ってから録音してください。';
-  }
-
-  return '内容を確認してからフィードバックをお送りします。';
+  return null;
 }
 
 async function handleAudioMessage(event) {

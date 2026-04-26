@@ -146,13 +146,18 @@ async function updateSubmission(id, patch) {
 
 function buildLineMessages(submission) {
   const messages = [];
+  const followupText = typeof submission.followup_text === 'string' ? submission.followup_text.trim() : '';
 
   if (submission.feedback_text) {
     messages.push({ type: 'text', text: submission.feedback_text });
   }
 
-  if (submission.followup_text) {
-    messages.push({ type: 'text', text: submission.followup_text });
+  if (
+    followupText &&
+    followupText !== '内容を確認してからフィードバックをお送りします。' &&
+    followupText !== '内容を確認してからフィードバックをお送りします。次回以降は先に「2日目」または「3日目」と送ってから録音してください。'
+  ) {
+    messages.push({ type: 'text', text: followupText });
   }
 
   return messages;
