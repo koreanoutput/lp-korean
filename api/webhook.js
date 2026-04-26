@@ -642,13 +642,17 @@ async function handleTextMessage(event) {
 
 function buildFeedbackText(lesson, recognizedText, feedback) {
   return (
-    `【Day ${lesson.day} フィードバック】\n` +
-    `あなたの発話(文字起こし): ${recognizedText || '(聞き取り結果なし)'}\n` +
-    `総合スコア: ${feedback.score}/100\n\n` +
-    `発音: ${feedback.pronunciation}\n` +
-    `イントネーション: ${feedback.intonation}\n` +
-    `改善ポイント: ${feedback.fix}\n` +
-    `模範文: ${feedback.model}`
+    `【Day ${lesson.day} フィードバック】\n\n` +
+    `◆あなたの発話（文字起こし）\n` +
+    `${recognizedText || '(聞き取り結果なし)'}\n\n` +
+    `◆発音\n` +
+    `${feedback.pronunciation}\n\n` +
+    `◆イントネーション\n` +
+    `${feedback.intonation}\n\n` +
+    `◆改善ポイント\n` +
+    `${feedback.fix}\n\n` +
+    `◆模範文\n` +
+    `${feedback.model}`
   );
 }
 
