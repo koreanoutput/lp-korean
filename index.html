@@ -168,19 +168,11 @@
     .seats-text strong { font-weight: 500; color: var(--color-text); }
     .limited-reason { font-size: 13px; color: var(--color-text3); margin-top: 12px; line-height: 1.8; text-align: center; }
 
-    /* 年末バナー：黒→温かみのある深緑ベースに変更 */
-    .yearend-banner {
-      background: #1a3a2a;
-      color: #f0f0ec;
-      border-radius: var(--radius-lg);
-      padding: 36px 24px;
-      text-align: center;
-    }
-    .yearend-banner .label { font-size: 12px; letter-spacing: 0.12em; opacity: 0.65; margin-bottom: 14px; }
-    .yearend-banner h2 { font-family: var(--font-serif); font-size: clamp(22px, 6vw, 28px); font-weight: 400; line-height: 1.65; margin-bottom: 18px; color: #f0f0ec; }
-    .yearend-banner p { font-size: 14px; opacity: 0.78; line-height: 1.9; margin-bottom: 28px; }
-    .yearend-banner .cta-btn { background: #06C755; color: #ffffff; font-size: 16px; }
-    .yearend-note { font-size: 12px; opacity: 0.55; margin-top: 12px; }
+    .yearend-section-inner { text-align: center; }
+    .yearend-label { font-size: 11px; letter-spacing: 0.14em; color: var(--color-text3); text-transform: uppercase; margin-bottom: 16px; display: block; }
+    .yearend-title { font-family: var(--font-serif); font-size: clamp(26px, 7vw, 34px); font-weight: 400; line-height: 1.6; color: var(--color-text); margin-bottom: 16px; }
+    .yearend-body { font-size: 15px; color: var(--color-text2); line-height: 1.85; margin-bottom: 28px; }
+    .yearend-note { font-size: 13px; color: var(--color-text3); margin-top: 12px; }
 
     .faq-list { margin: 24px 0; }
     .faq-item { padding: 18px 0; border-bottom: 1px solid var(--color-border); }
@@ -216,8 +208,7 @@
       <p class="hero-sub">アウトプットだけに特化した韓国語スクール。<br>まずは3日間、無料で体験してみてください。</p>
       <div class="prereg-box">
         <strong>LINE登録で3日間無料体験をプレゼント</strong>
-        1日1文、音声を送るだけ。AIがフィードバックを自動でお届けします。<br><br>
-        3日間で「저는 매일 아침에 커피를 마셔요（私は毎朝コーヒーを飲みます）」が自分の口から出るようになります。
+        1日1文、音声を送るだけ。AIがフィードバックを自動でお届けします。正式コースのアウトプット練習を3日間体験できます。
         <span class="trial-note">※体験版はAI添削のみの簡易版です。正式コースでは瞬間韓作文5文・1文日記・ネイティブレッスン・コーチ面談・専用オンライン学習スペースでのやりとりがあります。</span>
       </div>
       <a href="https://lin.ee/50VcRen" class="cta-btn" target="_blank">LINEで無料体験を受け取る ↗</a>
@@ -540,7 +531,11 @@
         </div>
         <div class="faq-item">
           <div class="faq-q"><span>途中でやめたくなったらどうなりますか？</span><span class="toggle">+</span></div>
-          <div class="faq-a">コース途中の返金はお受けしていません。ただし、続けられない理由がある場合はコーチに相談してください。学習ペースの調整や一時的な休止など、できる限り柔軟に対応します。まず無料体験の3日間で「続けられそうか」を確認してからお申し込みいただくことをおすすめします。</div>
+          <div class="faq-a">受講期間に応じて、以下の通り対応しています。<br><br>
+・1〜4週目（1ヶ月目）にご連絡いただいた場合 → 39,600円を返金<br>
+・5〜8週目（2ヶ月目）にご連絡いただいた場合 → 19,800円を返金<br>
+・9週目以降にご連絡いただいた場合 → 返金なし<br><br>
+なお、続けられない事情がある場合はまずコーチにご相談ください。学習ペースの調整や一時的な休止など、できる限り柔軟に対応します。まず無料体験の3日間で「続けられそうか」を確認してからお申し込みいただくことをおすすめします。</div>
         </div>
         <div class="faq-item">
           <div class="faq-q"><span>カリキュラムはどんな根拠で設計されていますか？</span><span class="toggle">+</span></div>
@@ -553,22 +548,16 @@
       </div>
     </section>
 
-    <section style="border-bottom: none; padding-bottom: 0;">
-      <div class="yearend-banner">
-        <div class="label">10月5日スタート · 12週間コース</div>
-        <h2>今年こそ、<br>話せる自分で<br>年を越す。</h2>
-        <p>10月5日にスタートすると、ちょうど12月末に修了します。<br>「今年こそ韓国語を話せるようになりたい」と思っているなら、今が始め時です。</p>
-        <a href="https://lin.ee/50VcRen" class="cta-btn" target="_blank">LINEで無料体験を受け取る ↗</a>
-        <p class="yearend-note">モニター残り5席 · 先着順</p>
-      </div>
-    </section>
-
-    <div class="footer">
-      <div class="footer-title">「話せる自分」は、<br>もうすぐそこにいます。</div>
-      <p class="footer-note">何年勉強しても話せなかったのは、<br>あなたの努力が足りなかったからではありません。<br>アウトプットの機会が足りなかっただけです。<br><br>まず3日間、試してみてください。</p>
+    <section style="padding:56px 0 48px; border-bottom:none; border-top:1px solid var(--color-border); text-align:center;">
+      <div style="font-size:11px; letter-spacing:0.14em; color:var(--color-text3); text-transform:uppercase; margin-bottom:16px;">10月5日スタート · 12週間コース</div>
+      <div style="font-family:var(--font-serif); font-size:clamp(26px, 7vw, 34px); font-weight:400; line-height:1.6; color:var(--color-text); margin-bottom:16px;">今年こそ、<br>話せる自分で<br>年を越す。</div>
+      <p style="font-size:15px; color:var(--color-text2); line-height:1.85; margin-bottom:36px;">10月5日にスタートすると、ちょうど12月末に修了します。<br>「今年こそ話せるようになりたい」と思っているなら、今が始め時です。</p>
+      <div style="width:40px; height:1px; background:var(--color-border2); margin:0 auto 36px;"></div>
+      <div style="font-family:var(--font-serif); font-size:clamp(20px, 5vw, 24px); font-weight:400; line-height:1.6; margin-bottom:14px; color:var(--color-text);">「話せる自分」は、<br>もうすぐそこにいます。</div>
+      <p style="font-size:15px; color:var(--color-text2); line-height:1.9; margin-bottom:28px;">何年勉強しても話せなかったのは、<br>あなたの努力が足りなかったからではありません。<br>アウトプットの機会が足りなかっただけです。<br>まず3日間、試してみてください。</p>
       <a href="https://lin.ee/50VcRen" class="cta-btn" target="_blank">LINEで無料体験を受け取る ↗</a>
-      <p style="font-size:13px; color:var(--color-text3); margin-top:12px;">登録後、すぐに1日目の課題が届きます</p>
-    </div>
+      <p style="font-size:13px; color:var(--color-text3); margin-top:12px;">登録後、すぐに1日目の課題が届きます · モニター残り5席</p>
+    </section>
 
   </div>
   <script>
