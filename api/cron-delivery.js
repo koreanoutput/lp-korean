@@ -1,7 +1,7 @@
 import { sendScheduledAssignments } from './webhook.js';
 
 const CRON_SECRET = process.env.CRON_SECRET;
-const DELIVERY_HOURS_JST = new Set([8, 19]);
+const DELIVERY_HOURS_JST = new Set([8]);
 
 function json(res, status, body) {
   res.statusCode = status;
