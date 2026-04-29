@@ -5,6 +5,7 @@ const LINE_CHANNEL_SECRET = process.env.LINE_CHANNEL_SECRET;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+const APPLICATION_FORM_URL = 'https://my-app-next-khaki.vercel.app/';
 
 const TRIAL_SENTENCES = [
   {
@@ -39,10 +40,12 @@ globalThis.__lineTrialUserStore = userProgressStore;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const JST_OFFSET_HOURS = 9;
 const LESSON_RELEASE_HOUR_JST = 8;
+const FINAL_GUIDE_HOUR_JST = 19;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const PROGRESS_TABLE = 'trial_user_progress';
 const REVIEW_TABLE = 'trial_feedback_reviews';
+const FINAL_GUIDE_DELIVERY_INDEX = 3;
 
 function json(res, status, body) {
   res.statusCode = status;
@@ -236,6 +239,17 @@ function getLessonReleaseTimestamp(startedAtISO, dayIndex) {
   });
 
   return day2ReleaseBase + DAY_MS * (dayIndex - 1);
+}
+
+function getFinalGuideReleaseTimestamp(startedAtISO) {
+  const startedAt = new Date(startedAtISO).getTime();
+  const { year, month, day } = getDatePartsInJst(startedAt);
+  return toUtcTimestampFromJst({
+    year,
+    month,
+    day: day + 3,
+    hour: FINAL_GUIDE_HOUR_JST
+  });
 }
 
 function getAvailableDayIndex(startedAtISO) {
@@ -526,14 +540,65 @@ function parseDayFromText(text) {
 }
 
 function getDayAssignmentMessage(dayIndex) {
-  const lesson = TRIAL_SENTENCES[dayIndex];
-  if (!lesson) return null;
+  if (dayIndex === 1) {
+    return (
+      '2日目の課題をお送りします！\n' +
+      '─────────────\n' +
+      '【2日目：単語を変えて使う】\n' +
+      '昨日と同じ文法で、単語だけ変えてみましょう。\n' +
+      '「私は今、家で仕事をしています。」\n' +
+      '─────────────\n' +
+      '【録音の送り方】\n' +
+      '① まず「2日目」とメッセージを送信してください。\n' +
+      '⚠️ このメッセージを送らないと添削が届きません。\n' +
+      '② トーク画面下のマイクボタンを押して録音し、送信してください。\n' +
+      '送っていただいた音声にAIがフィードバックをお返しします。\n' +
+      '正解は添削と一緒にお届けします。\n' +
+      '明日は最終日です。3日目もお楽しみに！'
+    );
+  }
 
+  if (dayIndex === 2) {
+    return (
+      '最終日の課題をお送りします！\n' +
+      '─────────────\n' +
+      '【3日目：自分の言葉で話す】\n' +
+      '今日は空欄を自分で埋めて録音してください。\n' +
+      '「今日は＿＿をしています。」\n' +
+      '何を入れてもOKです。\n' +
+      '「今日は韓国語を勉強しています」でも\n' +
+      '「今日は家でのんびりしています」でも。\n' +
+      '自分の言葉で言えたら、それがアウトプットです。\n' +
+      '─────────────\n' +
+      '【録音の送り方】\n' +
+      '① まず「3日目」とメッセージを送信してください。\n' +
+      '⚠️ このメッセージを送らないと添削が届きません。\n' +
+      '② トーク画面下のマイクボタンを押して録音し、送信してください。\n' +
+      '送っていただいた音声にAIがフィードバックをお返しします。\n' +
+      '正解は添削と一緒にお届けします。\n' +
+      '3日間、お疲れさまでした！'
+    );
+  }
+
+  return null;
+}
+
+function getFinalGuideMessage() {
   return (
-    `【${lesson.day}日目の課題】\n` +
-    '以下の日本語を韓国語で言って、音声を送ってください。\n' +
-    `「${lesson.japanesePrompt}」\n` +
-    `先に「${lesson.day}日目」と送ってから録音するとスムーズです。`
+    '昨日までの3日間体験、ありがとうございました。\n' +
+    '改めてコースのご案内です。\n' +
+    '韓国語アウトプットジムでは、「勉強したけど話せない」方を対象に、12週間でアウトプット特化の練習を毎日続けます。\n' +
+    '✔︎ 瞬間韓作文（録音5文）\n' +
+    '✔︎ 1文日記\n' +
+    '✔︎ ネイティブレッスン 週1回\n' +
+    '✔︎ コーチ面談 月2〜3回\n' +
+    '✔︎ 1か月延長保証付き※条件あり\n' +
+    '10月5日開講・モニター5名限定\n' +
+    'モニター価格 ¥59,400（正規 ¥98,000）\n' +
+    '3分割払い可\n' +
+    '【申し込みフォームURL】\n' +
+    `${APPLICATION_FORM_URL}\n` +
+    '「自分に合うか不安」「もう少し聞きたい」という方も、このままメッセージをどうぞ！ '
   );
 }
 
@@ -556,11 +621,22 @@ export async function sendScheduledAssignments(now = Date.now()) {
 
       if (!alreadyDelivered && now >= releaseAt) {
         const text = getDayAssignmentMessage(dayIndex);
-        await pushMessage(userId, { type: 'text', text });
-        progress.deliveredDays.push(dayIndex);
-        progress.deliveredDays.sort((a, b) => a - b);
-        sentCount += 1;
+        if (text) {
+          await pushMessage(userId, { type: 'text', text });
+          progress.deliveredDays.push(dayIndex);
+          progress.deliveredDays.sort((a, b) => a - b);
+          sentCount += 1;
+        }
       }
+    }
+
+    const finalGuideAlreadyDelivered = progress.deliveredDays.includes(FINAL_GUIDE_DELIVERY_INDEX);
+    const finalGuideReleaseAt = getFinalGuideReleaseTimestamp(progress.startedAt);
+    if (!finalGuideAlreadyDelivered && now >= finalGuideReleaseAt) {
+      await pushMessage(userId, { type: 'text', text: getFinalGuideMessage() });
+      progress.deliveredDays.push(FINAL_GUIDE_DELIVERY_INDEX);
+      progress.deliveredDays.sort((a, b) => a - b);
+      sentCount += 1;
     }
 
     await saveProgress(progress);
@@ -597,7 +673,7 @@ async function handleFollow(event) {
         '正解は添削と一緒にお届けします。\n' +
         '※ 体験版は1文のみです。正式コースでは毎日5文に取り組みます。\n' +
         'コースに関するご質問はいつでもどうぞ。\n' +
-        'コースの詳細・お申し込みはこちら→【URL】'
+        `コースの詳細・お申し込みはこちら→${APPLICATION_FORM_URL}`
     }
   ]);
 }
@@ -657,20 +733,6 @@ function buildFeedbackText(lesson, recognizedText, feedback) {
 }
 
 function buildFollowupText(progress, dayIndex) {
-  const willCompleteAll = progress.completedDays.length + 1 >= TRIAL_SENTENCES.length;
-
-  if (willCompleteAll) {
-    return (
-      '3日間の無料体験、完走おめでとうございます！🎉\n' +
-      'ご参加ありがとうございました。\n\n' +
-      '「続けたい」「もっとやりたい」と感じていただけていたら、ぜひ正式コースへ。\n' +
-      '10月5日開講・モニター5名限定です。\n' +
-      '正規価格 ¥98,000のところ、モニター特別価格 ¥59,400（40%OFF）でご参加いただけます。\n' +
-      '【申し込みフォームURL】\n' +
-      'ご質問はお気軽にどうぞ。明日も改めてご案内をお送りします。'
-    );
-  }
-
   return null;
 }
 

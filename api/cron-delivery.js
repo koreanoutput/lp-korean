@@ -1,7 +1,7 @@
 import { sendScheduledAssignments } from './webhook.js';
 
 const CRON_SECRET = process.env.CRON_SECRET;
-const LESSON_RELEASE_HOUR_JST = 8;
+const DELIVERY_HOURS_JST = new Set([8, 19]);
 
 function json(res, status, body) {
   res.statusCode = status;
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
   }
 
   const force = req.query?.force === '1';
-  if (!force && getCurrentJstHour() !== LESSON_RELEASE_HOUR_JST) {
+  if (!force && !DELIVERY_HOURS_JST.has(getCurrentJstHour())) {
     return json(res, 200, { ok: true, skipped: true, reason: 'Not release hour in JST' });
   }
 
