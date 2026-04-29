@@ -733,6 +733,21 @@ function buildFeedbackText(lesson, recognizedText, feedback) {
 }
 
 function buildFollowupText(progress, dayIndex) {
+  const willCompleteAll = progress.completedDays.length + 1 >= TRIAL_SENTENCES.length;
+
+  if (willCompleteAll) {
+    return (
+      '3日間の無料体験にご参加いただきありがとうございました！\n' +
+      'いかがでしたか？\n' +
+      '「続けたい」「もっとやりたい」と感じていただけていたら、ぜひ正式コースへ。\n' +
+      '10月5日開講・モニター5名限定です。\n' +
+      '正規価格 ¥98,000のところ、モニター特別価格 ¥59,400（40%OFF）でご参加いただけます。\n' +
+      '【申し込みフォームURL】\n' +
+      `${APPLICATION_FORM_URL}\n` +
+      'ご質問はお気軽にどうぞ。明日も改めてご案内をお送りします。'
+    );
+  }
+
   return null;
 }
 
