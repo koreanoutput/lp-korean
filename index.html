@@ -6,7 +6,7 @@
   <title>韓国語アウトプットジム | 話せる韓国語を12週間で</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googaleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -39,11 +39,11 @@
       margin-bottom: 28px;
     }
     .hero-service { font-family: var(--serif); font-size: 12px; color: var(--text3); letter-spacing: 0.14em; margin-bottom: 16px; }
-    .hero-catch { text-align: left; margin-bottom: 6px; }
+    .hero-catch { text-align: center; margin-bottom: 6px; }
     .hero-catch .l1 { display: block; font-family: var(--serif); font-size: clamp(18px, 4.5vw, 24px); font-weight: 400; color: var(--text2); margin-bottom: 4px; }
     .hero-catch .l2 { display: inline-block; font-family: var(--serif); font-size: clamp(28px, 7.5vw, 38px); font-weight: 400; color: var(--text); border-bottom: 2px solid var(--text); padding-bottom: 2px; line-height: 1.4; }
-    .hero-sub { font-size: 15px; color: var(--text2); line-height: 1.85; margin-bottom: 10px; text-align: center; }
-    .hero-guarantee { font-size: 13px; color: var(--text3); margin-bottom: 24px; text-align: center; }
+    .hero-sub { font-size: 15px; color: var(--text2); line-height: 1.85; margin-bottom: 10px; text-align: left; }
+
     .hero-guarantee span { color: var(--text2); font-weight: 500; }
 
     /* ── STATS BAR（ヒーロー直下）── */
@@ -225,14 +225,19 @@
   <!-- ── HERO ── -->
   <div class="hero">
     <div class="hero-service">韓国語アウトプットジム</div>
-    <div class="hero-badge">初級文法を学んだのに、話せない方へ · 2026年10月5日開講 · 受講枠5名限定</div>
-    <div class="hero-catch">
+    <div class="hero-badge">初級文法を学んだのに、話せない方へ</div>
+    <div style="font-size:12px; color:var(--text3); margin-bottom:16px; letter-spacing:0.04em;">2026年10月5日開講 · 受講枠5名限定</div>
+    <div class="hero-catch" style="text-align:center;">
       <span class="l1">「勉強してるのに話せない」が、</span>
       <span class="l2">12週間で変わる。</span>
     </div>
-    <p class="hero-sub">10月5日に始めれば、<strong>今年中に話せるようになる。</strong><br>アウトプットに特化した12週間で、「知っている」が「話せる」に変わります。</p>
+    <p class="hero-sub" style="text-align:center;">10月5日に始めれば、<strong>今年中に話せるようになる。</strong><br>アウトプットに特化した12週間で、「知っている」を「話せる」に変えます。</p>
     <p style="font-size:13px; color:var(--text3); margin-bottom:0; text-align:center;">↓ まず3日間、無料で試してみてください</p>
-    <p class="hero-guarantee">毎日フィードバック · <span>12週間59,400円</span> · <span>効果がなければ4週間無料延長保証</span></p>
+    <ul style="list-style:none; margin-bottom:24px; display:inline-block; text-align:left;">
+      <li style="font-size:15px; color:var(--text2); padding:5px 0; display:flex; align-items:center; gap:8px; line-height:1.6;"><span style="color:var(--green); font-weight:700; font-size:16px;">✓</span>毎日フィードバック（週6〜7回）</li>
+      <li style="font-size:15px; color:var(--text2); padding:5px 0; display:flex; align-items:center; gap:8px; line-height:1.6;"><span style="color:var(--green); font-weight:700; font-size:16px;">✓</span>12週間 59,400円（他社の5分の1以下）</li>
+      <li style="font-size:15px; color:var(--text2); padding:5px 0; display:flex; align-items:center; gap:8px; line-height:1.6;"><span style="color:var(--green); font-weight:700; font-size:16px;">✓</span>効果がなければ4週間無料延長保証</li>
+    </ul>
 
     <div class="stats-bar">
       <div class="stats-bar-item">
